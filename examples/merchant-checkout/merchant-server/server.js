@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import express from 'express'
-import { verifyWebhook } from '@Cadenceprotocol/sdk'
+import { verifyWebhook } from '@autopayprotocol/sdk'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import { createClient } from '@supabase/supabase-js'

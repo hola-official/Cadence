@@ -4,7 +4,7 @@
 
 **Non-custodial crypto subscription payments. 50% cheaper than Stripe.**
 
-AutoPay is a decentralized subscription payment protocol built on USDC. Users maintain full custody of their funds while enabling merchants to collect recurring payments automatically. Users fund their wallet from 12+ chains via Circle Gateway, and all payments settle on Arc, where merchants receive funds.
+Cadence is a decentralized subscription payment protocol built on USDC. Users maintain full custody of their funds while enabling merchants to collect recurring payments automatically. Users fund their wallet from 12+ chains via Circle Gateway, and all payments settle on Arc, where merchants receive funds.
 
 ## Features
 
@@ -24,19 +24,19 @@ AutoPay is a decentralized subscription payment protocol built on USDC. Users ma
 │                                                                 │
 │  1. User connects wallet (Circle Modular Wallet)                │
 │  2. User funds wallet from any chain via Circle Gateway         │
-│  3. User approves USDC to PolicyManager on Arc                  │
+│  3. User approves USDC to PolicyManager on Arb                  │
 │  4. User creates policy (merchant, amount, interval, cap)       │
 │  5. Relayer calls charge() when payment is due                  │
 │                                                                 │
 │  ┌──────────┐     ┌─────────┐     ┌───────────────┐            │
 │  │  Payer   │────►│ Gateway │────►│ PolicyManager │            │
-│  │(any chain)│     │         │     │    (Arc)      │            │
+│  │(any chain)│     │         │     │    (Arb)      │            │
 │  └──────────┘     └─────────┘     └───────┬───────┘            │
 │                                           │                     │
 │                                           ▼                     │
 │                                    ┌──────────────┐             │
 │                                    │   Merchant   │             │
-│                                    │    (Arc)     │             │
+│                                    │    (Arb)     │             │
 │                                    └──────────────┘             │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -55,7 +55,7 @@ AutoPay is a decentralized subscription payment protocol built on USDC. Users ma
 ## Project Structure
 
 ```
-Auto-Pay-Protocol/
+Cadence-Protocol/
 ├── contracts/           # Solidity smart contracts (Foundry)
 │   ├── src/            # Contract source files
 │   ├── test/           # Contract tests
@@ -73,7 +73,7 @@ Auto-Pay-Protocol/
 │       ├── api/        # Health check endpoint
 │       └── db/         # Postgres client & queries
 ├── packages/
-│   └── sdk/            # Merchant SDK (@autopayprotocol/sdk)
+│   └── sdk/            # Merchant SDK (candence-sdk)
 ├── examples/
 │   ├── merchant-checkout/  # Example merchant checkout integration
 │   └── webhook-receiver/   # Example webhook handler
@@ -165,9 +165,9 @@ function cancelFailedPolicy(bytes32 policyId) external;
 
 ## Testnet Addresses
 
-| Chain | USDC | ArcPolicyManager |
+| Chain | USDC | ArbPolicyManager |
 |-------|------|------------------|
-| Arc Testnet | `0x3600000000000000000000000000000000000000` | `0x0a681aC070ef81afb1c888D3370246633aE46A27` |
+| Arb Testnet | `0x3600000000000000000000000000000000000000` | `0x0a681aC070ef81afb1c888D3370246633aE46A27` |
 
 Users fund their Arc wallet from 12+ chains via [Circle Gateway](https://developers.circle.com/gateway). All subscriptions and charges happen natively on Arc.
 
@@ -184,9 +184,9 @@ VITE_POLICY_MANAGER_ARC=0x0a681aC070ef81afb1c888D3370246633aE46A27
 ### Relayer
 
 ```env
-DATABASE_URL=postgres://user:pass@host:5432/autopay
+DATABASE_URL=postgres://user:pass@host:5432/cadence
 RELAYER_PRIVATE_KEY=0x...
-ARC_TESTNET_RPC=https://rpc-testnet.arc.network
+
 ```
 
 ## Documentation
