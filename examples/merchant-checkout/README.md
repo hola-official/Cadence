@@ -1,11 +1,11 @@
 # Merchant Checkout Demo
 
-A Stripe-like checkout flow for AutoPay. Demonstrates how a merchant generates checkout links and how users subscribe through the hosted checkout page at `/checkout` in the main frontend.
+A Stripe-like checkout flow for Cadence. Demonstrates how a merchant generates checkout links and how users subscribe through the hosted checkout page at `/checkout` in the main frontend.
 
 ## Architecture
 
 ```
-Merchant Server (:3002)              autopayprotocol.com/checkout         On-chain
+Merchant Server (:3002)              cadence-pi-roan.vercel.app/checkout         On-chain
 ─────────────────────                ──────────────────────────────      ────────
 
 GET / (plan cards)
@@ -31,7 +31,7 @@ GET / (plan cards)
 - Node.js 18+
 - A Circle Modular Wallets API key ([console.circle.com](https://console.circle.com))
 - Testnet USDC on Arc Testnet (use the [Circle faucet](https://faucet.circle.com/))
-- The AutoPay frontend at [autopayprotocol.com](https://autopayprotocol.com)
+- The Cadence frontend at [cadence-pi-roan.vercel.app](https://cadence-pi-roan.vercel.app)
 
 ### 1. Merchant Server
 
@@ -46,7 +46,7 @@ Opens at [http://localhost:3002](http://localhost:3002) — shows plan cards wit
 ### 2. Try It
 
 1. Open [http://localhost:3002](http://localhost:3002)
-2. Click "Subscribe with AutoPay" on a plan
+2. Click "Subscribe with Cadence" on a plan
 3. Walk through: register passkey → approve USDC → confirm subscription
 4. After success: auto-redirects to merchant's success page with `policy_id`
 
@@ -55,7 +55,7 @@ Opens at [http://localhost:3002](http://localhost:3002) — shows plan cards wit
 The merchant generates a URL with these query params:
 
 ```
-https://autopayprotocol.com/checkout?merchant=0x...&metadata_url=http://localhost:3002/metadata/pro-plan&success_url=http://localhost:3002/success&cancel_url=http://localhost:3002/cancel
+https://cadence-pi-roan.vercel.app/checkout?merchant=0x...&metadata_url=http://localhost:3002/metadata/pro-plan&success_url=http://localhost:3002/success&cancel_url=http://localhost:3002/cancel
 ```
 
 | Parameter | Description |
