@@ -2,7 +2,7 @@
 
 ## Overview
 
-The AutoPay relayer is configured entirely through environment variables. This reference covers every configuration option, retry presets, merchant filtering, and the TypeScript interfaces that define the config shape.
+The Cadence relayer is configured entirely through environment variables. This reference covers every configuration option, retry presets, merchant filtering, and the TypeScript interfaces that define the config shape.
 
 ---
 
@@ -28,7 +28,7 @@ The AutoPay relayer is configured entirely through environment variables. This r
 
 ```bash
 # Database (any Postgres - Supabase, Neon, Docker, local)
-DATABASE_URL=postgres://autopay:password@localhost:5432/autopay
+DATABASE_URL=postgres://Cadence:password@localhost:5432/Cadence
 
 # Relayer wallet private key (must have native tokens for gas)
 RELAYER_PRIVATE_KEY=0x...
@@ -86,7 +86,7 @@ The relayer accepts a standard PostgreSQL connection string via `DATABASE_URL`. 
 
 | Provider | Example Connection String |
 |----------|--------------------------|
-| Docker (local) | `postgres://autopay:password@localhost:5432/autopay` |
+| Docker (local) | `postgres://Cadence:password@localhost:5432/Cadence` |
 | Supabase | `postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres` |
 | Neon | `postgres://user:pass@ep-cool-rain.neon.tech/neondb` |
 | Railway | Auto-injected as `DATABASE_URL` |

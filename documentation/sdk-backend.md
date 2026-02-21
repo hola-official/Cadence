@@ -2,9 +2,9 @@
 
 ## Overview
 
-When subscribers sign up or get charged, AutoPay sends your server a signed webhook (HTTP POST) with event details. Your backend uses these to grant access, extend subscriptions, or handle cancellations.
+When subscribers sign up or get charged, Cadence sends your server a signed webhook (HTTP POST) with event details. Your backend uses these to grant access, extend subscriptions, or handle cancellations.
 
-The `@autopayprotocol/sdk` package provides typed webhook verification, checkout URL building, and USDC amount helpers. It's framework-agnostic and has zero runtime dependencies.
+The `cadence-sdk` package provides typed webhook verification, checkout URL building, and USDC amount helpers. It's framework-agnostic and has zero runtime dependencies.
 
 ---
 
@@ -14,13 +14,13 @@ The `@autopayprotocol/sdk` package provides typed webhook verification, checkout
 sequenceDiagram
     participant User
     participant YourSite as Your Site
-    participant AutoPay as AutoPay Checkout
-    participant Relayer as AutoPay Relayer
+    participant Cadence as Cadence Checkout
+    participant Relayer as Cadence Relayer
 
     User->>YourSite: Clicks "Subscribe"
-    YourSite->>AutoPay: Redirect to checkout URL
-    AutoPay->>AutoPay: User pays (first charge)
-    AutoPay->>YourSite: Redirect to success URL
+    YourSite->>Cadence: Redirect to checkout URL
+    Cadence->>Cadence: User pays (first charge)
+    Cadence->>YourSite: Redirect to success URL
 
     Note over Relayer: Each billing cycle...
     Relayer->>Relayer: Charges subscriber on-chain
@@ -29,9 +29,9 @@ sequenceDiagram
 ```
 
 1. You build a **checkout URL** with your plan details and redirect users to it
-2. The user subscribes and pays their first charge on the AutoPay checkout page
+2. The user subscribes and pays their first charge on the Cadence checkout page
 3. On success, the user is redirected back to your site
-4. For each subsequent billing cycle, AutoPay's relayer charges the subscriber on-chain and sends your server a **webhook** with the result
+4. For each subsequent billing cycle, Cadence's relayer charges the subscriber on-chain and sends your server a **webhook** with the result
 
 You handle webhooks to manage access. Everything else is automatic.
 
@@ -40,7 +40,7 @@ You handle webhooks to manage access. Everything else is automatic.
 ## Prerequisites
 
 - Node.js >= 20 (for SDK) or any HTTP server (for manual verification)
-- A webhook secret (shared with the AutoPay relayer operator during merchant registration)
+- A webhook secret (shared with the Cadence relayer operator during merchant registration)
 
 ---
 
@@ -49,13 +49,13 @@ You handle webhooks to manage access. Everything else is automatic.
 ### 1. Install the SDK
 
 ```bash
-npm install @autopayprotocol/sdk
+npm install cadence-sdk
 ```
 
 ### 2. Build a checkout URL
 
 ```typescript
-import { createCheckoutUrl } from '@autopayprotocol/sdk'
+import { createCheckoutUrl } from 'cadence-sdk'
 
 const url = createCheckoutUrl({
   merchant: '0xYOUR_MERCHANT_ADDRESS',
@@ -73,7 +73,7 @@ const url = createCheckoutUrl({
 ### 3. Handle webhooks
 
 ```typescript
-import { verifyWebhook } from '@autopayprotocol/sdk'
+import { verifyWebhook } from 'cadence-sdk'
 
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
 
@@ -81,12 +81,12 @@ const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
 import { createServer } from 'http'
 
 createServer((req, res) => {
-  if (req.method === 'POST' && req.url === '/webhooks/autopay') {
+  if (req.method === 'POST' && req.url === '/webhooks/Cadence') {
     let body = ''
     req.on('data', chunk => { body += chunk.toString() })
     req.on('end', () => {
       try {
-        const event = verifyWebhook(body, req.headers['x-autopay-signature'], WEBHOOK_SECRET)
+        const event = verifyWebhook(body, req.headers['x-Cadence-signature'], WEBHOOK_SECRET)
         console.log(`Received: ${event.type}`, event.data)
 
         // Always respond 200 to acknowledge receipt
@@ -105,7 +105,7 @@ createServer((req, res) => {
 
 ## Merchant Registration
 
-Before you can receive webhooks, your merchant must be registered with the AutoPay relayer. Registration links your wallet address to a webhook URL and shared secret.
+Before you can receive webhooks, your merchant must be registered with the Cadence relayer. Registration links your wallet address to a webhook URL and shared secret.
 
 **If using a hosted relayer**, contact the relayer operator with:
 - Your wallet address (where you receive USDC)
@@ -117,7 +117,7 @@ Before you can receive webhooks, your merchant must be registered with the AutoP
 ```bash
 npm run cli -- merchant:add \
   --address 0xYOUR_MERCHANT_ADDRESS \
-  --webhook-url https://yoursite.com/webhooks/autopay \
+  --webhook-url https://yoursite.com/webhooks/Cadence \
   --webhook-secret your_secret_here
 ```
 
@@ -127,10 +127,10 @@ npm run cli -- merchant:add \
 
 ### Building a Checkout URL
 
-`createCheckoutUrl()` validates your inputs and builds a URL that redirects users to the AutoPay checkout page:
+`createCheckoutUrl()` validates your inputs and builds a URL that redirects users to the Cadence checkout page:
 
 ```typescript
-import { createCheckoutUrl } from '@autopayprotocol/sdk'
+import { createCheckoutUrl } from 'cadence-sdk'
 
 const url = createCheckoutUrl({
   merchant: '0x2B8b9182c1c3A9bEf4a60951D9B7F49420D12B9B',
@@ -141,7 +141,7 @@ const url = createCheckoutUrl({
   cancelUrl: 'https://yoursite.com/cancel',
   spendingCap: 119.88,             // optional - max total USDC
 })
-// → "https://autopayprotocol.com/checkout?merchant=0x...&amount=9.99&interval=2592000&..."
+// → "https://Cadenceprotocol.com/checkout?merchant=0x...&amount=9.99&interval=2592000&..."
 ```
 
 **Interval presets:** `'weekly'` (7 days), `'biweekly'` (14 days), `'monthly'` (30 days), `'quarterly'` (90 days), `'yearly'` (365 days). You can also pass raw seconds for custom intervals.
@@ -151,7 +151,7 @@ const url = createCheckoutUrl({
 After subscribing, the user is redirected to your `successUrl` with query params. Parse them to get the subscription details:
 
 ```typescript
-import { parseSuccessRedirect } from '@autopayprotocol/sdk'
+import { parseSuccessRedirect } from 'cadence-sdk'
 
 const { policyId, txHash } = parseSuccessRedirect(window.location.search)
 ```
@@ -206,21 +206,21 @@ All events include `policyId`, `chainId`, `payer`, and `merchant` in `data`. Add
 
 ### Signature Verification
 
-Every webhook includes an HMAC-SHA256 signature in the `X-AutoPay-Signature` header. The signature is computed over the raw request body using your webhook secret.
+Every webhook includes an HMAC-SHA256 signature in the `X-Cadence-Signature` header. The signature is computed over the raw request body using your webhook secret.
 
 | Header | Description |
 |--------|-------------|
-| `X-AutoPay-Signature` | HMAC-SHA256 hex digest of the request body |
-| `X-AutoPay-Timestamp` | ISO 8601 timestamp of when the webhook was sent |
+| `X-Cadence-Signature` | HMAC-SHA256 hex digest of the request body |
+| `X-Cadence-Timestamp` | ISO 8601 timestamp of when the webhook was sent |
 | `Content-Type` | `application/json` |
 
 **Using the SDK:** `verifyWebhook()` verifies the signature and parses the payload in one call. It throws if the signature is invalid.
 
 ```typescript
-import { verifyWebhook } from '@autopayprotocol/sdk'
+import { verifyWebhook } from 'cadence-sdk'
 
 try {
-  const event = verifyWebhook(rawBody, req.headers['x-autopay-signature'], WEBHOOK_SECRET)
+  const event = verifyWebhook(rawBody, req.headers['x-Cadence-signature'], WEBHOOK_SECRET)
   // event.type is the event name, event.data is the typed payload
 } catch (err) {
   // Invalid signature - reject
@@ -233,9 +233,9 @@ try {
 You can also verify without parsing:
 
 ```typescript
-import { verifySignature } from '@autopayprotocol/sdk'
+import { verifySignature } from 'cadence-sdk'
 
-const isValid = verifySignature(rawBody, req.headers['x-autopay-signature'], WEBHOOK_SECRET)
+const isValid = verifySignature(rawBody, req.headers['x-Cadence-signature'], WEBHOOK_SECRET)
 ```
 
 **Manual verification** (without SDK):
@@ -255,7 +255,7 @@ function verify(rawBody, signature, secret) {
 The SDK returns a discriminated union, so TypeScript narrows the `data` shape based on `event.type`:
 
 ```typescript
-import { verifyWebhook, formatUSDC } from '@autopayprotocol/sdk'
+import { verifyWebhook, formatUSDC } from 'cadence-sdk'
 
 const event = verifyWebhook(rawBody, signature, secret)
 
@@ -307,7 +307,7 @@ Timeout is 10 seconds per attempt. Always respond `200` promptly, even if you pr
 USDC amounts in webhooks are raw 6-decimal strings (e.g. `"10000000"` = 10.00 USDC). The SDK provides helpers for conversion and fee calculation:
 
 ```typescript
-import { formatUSDC, parseUSDC, calculateFeeBreakdown } from '@autopayprotocol/sdk'
+import { formatUSDC, parseUSDC, calculateFeeBreakdown } from 'cadence-sdk'
 
 formatUSDC('9990000')           // "9.99"
 parseUSDC(9.99)                 // "9990000"
@@ -324,7 +324,7 @@ A minimal webhook receiver:
 
 ```javascript
 import { createServer } from 'http'
-import { verifyWebhook } from '@autopayprotocol/sdk'
+import { verifyWebhook } from 'cadence-sdk'
 
 const PORT = 3500
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
@@ -341,7 +341,7 @@ const server = createServer((req, res) => {
     req.on('data', chunk => { body += chunk.toString() })
     req.on('end', () => {
       try {
-        const event = verifyWebhook(body, req.headers['x-autopay-signature'], WEBHOOK_SECRET)
+        const event = verifyWebhook(body, req.headers['x-Cadence-signature'], WEBHOOK_SECRET)
         console.log(`Received: ${event.type}`, event.data)
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify({ received: true }))

@@ -1,8 +1,8 @@
 # Merchant Checkout Example
 
-A complete working example of a merchant integrating AutoPay for recurring subscription payments.
+A complete working example of a merchant integrating Cadence for recurring subscription payments.
 
-[View on GitHub](https://github.com/apeoverflow/Auto-Pay-Protocol/tree/main/examples/merchant-checkout)
+[View on GitHub](https://github.com/hola-official/Cadence-Protocol/tree/main/examples/merchant-checkout)
 
 ---
 
@@ -24,7 +24,7 @@ graph TD
     end
 
     D[(Supabase DB)]
-    E["AutoPay Frontend<br/>Checkout Page"]
+    E["Cadence Frontend<br/>Checkout Page"]
 
     G -- "fetch plans" --> A
     A -- "checkout URL" --> E
@@ -34,7 +34,7 @@ graph TD
     C -- "query access" --> D
 ```
 
-The **merchant server** is the only part you build. The AutoPay frontend and relayer are shared infrastructure.
+The **merchant server** is the only part you build. The Cadence frontend and relayer are shared infrastructure.
 
 ---
 
@@ -66,7 +66,7 @@ examples/merchant-checkout/
 sequenceDiagram
     participant User
     participant Merchant as Merchant Server
-    participant Frontend as AutoPay Frontend
+    participant Frontend as Cadence Frontend
     participant Contract as PolicyManager
     participant Relayer
 
@@ -98,10 +98,10 @@ sequenceDiagram
 
 ### 1. Pricing Page (`public/index.html`)
 
-Fetches plans from the relayer's metadata API and renders cards with pricing, features, and a "Subscribe" button. The button links to the AutoPay checkout with query params:
+Fetches plans from the relayer's metadata API and renders cards with pricing, features, and a "Subscribe" button. The button links to the Cadence checkout with query params:
 
 ```
-https://autopayprotocol.com/checkout?
+https://Cadenceprotocol.com/checkout?
   merchant=0x2B8b...
   metadata_url=http://localhost:3420/metadata/pro-plan
   amount=0.10
@@ -143,10 +143,10 @@ graph TD
     PCF -->|Set expired, revoke access| DB
 ```
 
-Signature verification uses `@autopayprotocol/sdk`:
+Signature verification uses `cadence-sdk`:
 
 ```javascript
-import { verifyWebhook } from '@autopayprotocol/sdk'
+import { verifyWebhook } from 'cadence-sdk'
 
 const verified = verifyWebhook(payload, signature, WEBHOOK_SECRET)
 // verified.type  → 'charge.succeeded'
@@ -262,7 +262,7 @@ Plans are JSON files served by the relayer. The example includes two demo plans 
 ### Prerequisites
 
 - Node.js >= 20
-- AutoPay frontend available at [autopayprotocol.com](https://autopayprotocol.com)
+- Cadence frontend available at [Cadenceprotocol.com](https://Cadenceprotocol.com)
 - Relayer running on port 3420 (`cd relayer && npm run dev`)
 - Supabase project (for auth and subscriber tracking)
 
@@ -285,7 +285,7 @@ The server starts at `http://localhost:3002`. Visit it to see the pricing page.
 ### Testing the Flow
 
 1. Visit `http://localhost:3002` — sign up with email/password
-2. Pick a plan — redirects to AutoPay checkout
+2. Pick a plan — redirects to Cadence checkout
 3. Complete checkout with passkey — creates policy on-chain
 4. Redirected to success page — policy verified and claimed
 5. Click "Access Content" — gated content unlocked
@@ -299,7 +299,7 @@ The server starts at `http://localhost:3002`. Visit it to see the pricing page.
 |----------|---------|-------------|
 | `PORT` | `3002` | Server port |
 | `MERCHANT_ADDRESS` | — | Your wallet address for receiving payments |
-| `CHECKOUT_URL` | `https://autopayprotocol.com/checkout` | AutoPay frontend checkout URL |
+| `CHECKOUT_URL` | `https://Cadenceprotocol.com/checkout` | Cadence frontend checkout URL |
 | `RELAYER_URL` | `http://localhost:3420` | Relayer API for metadata |
 | `WEBHOOK_SECRET` | `test-secret-123` | Shared secret for webhook verification |
 | `SUPABASE_URL` | — | Supabase project URL |
@@ -309,6 +309,6 @@ The server starts at `http://localhost:3002`. Visit it to see the pricing page.
 
 ## Related Documentation
 
-- [Backend Integration Guide](./sdk-backend.md) — `@autopayprotocol/sdk` reference
+- [Backend Integration Guide](./sdk-backend.md) — `cadence-sdk` reference
 - [Merchant Guide](./merchant-guide.md) — Business-level overview
 - [Relayer Operations](./relayer-operations.md) — Registering merchants and metadata

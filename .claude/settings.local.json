@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sort find /c/Users/HP/Desktop/Project/Cadence-Protocol/contracts -type f)",
+      "Bash(sort find /c/Users/HP/Desktop/Project/Cadence-Protocol/examples -type f)",
+      "Bash(sort:*)"
+    ]
+  }
+}

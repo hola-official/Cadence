@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide covers deploying the AutoPay relayer to production. Three deployment options are available: Railway (recommended for simplicity), Docker Compose (self-hosted), or a managed Postgres with a direct Node.js process.
+This guide covers deploying the Cadence relayer to production. Three deployment options are available: Railway (recommended for simplicity), Docker Compose (self-hosted), or a managed Postgres with a direct Node.js process.
 
 ---
 
@@ -68,7 +68,7 @@ See the [Configuration Reference](./relayer-configuration.md) for all available 
 Railway auto-deploys when you add/change environment variables or push to main. Check the **Deployments** tab for build logs:
 
 ```
-INFO (relayer): Starting AutoPay relayer...
+INFO (relayer): Starting Cadence relayer...
 INFO (relayer): Relayer wallet {"wallet":"0x..."}
 INFO (indexer): Starting indexer loop
 INFO (executor): Starting executor loop
@@ -80,7 +80,7 @@ INFO (api): API server listening on port 3001
 1. Go to your relayer service > **Settings**
 2. Scroll to **Networking** > **Public Networking**
 3. Click **Generate Domain**
-4. You'll get a URL like: `autopay-relayer-production.up.railway.app`
+4. You'll get a URL like: `Cadence-relayer-production.up.railway.app`
 
 ### Step 8: Verify Deployment
 
@@ -103,7 +103,7 @@ Railway provides a shell for running commands:
 npm run cli -- status
 npm run cli -- merchant:add \
   --address 0xMERCHANT_ADDRESS \
-  --webhook-url https://merchant.com/webhooks/autopay \
+  --webhook-url https://merchant.com/webhooks/Cadence \
   --webhook-secret their_secret_here
 ```
 
@@ -150,7 +150,7 @@ services:
       context: ..
       dockerfile: docker/Dockerfile
     environment:
-      DATABASE_URL: postgres://autopay:password@db:5432/autopay
+      DATABASE_URL: postgres://Cadence:password@db:5432/Cadence
       RELAYER_PRIVATE_KEY: ${RELAYER_PRIVATE_KEY}
       ARC_TESTNET_RPC: ${ARC_TESTNET_RPC:-https://rpc.testnet.arc.network}
       PORT: ${PORT:-3001}
@@ -168,15 +168,15 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: autopay
-      POSTGRES_USER: autopay
+      POSTGRES_DB: Cadence
+      POSTGRES_USER: Cadence
       POSTGRES_PASSWORD: password
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U autopay -d autopay"]
+      test: ["CMD-SHELL", "pg_isready -U Cadence -d Cadence"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -188,7 +188,7 @@ volumes:
 3. Run migrations:
 
 ```bash
-docker exec autopay-relayer npm run cli -- db:migrate
+docker exec Cadence-relayer npm run cli -- db:migrate
 ```
 
 4. Verify:
@@ -200,7 +200,7 @@ curl http://localhost:3001/health
 ### CLI Access (Docker)
 
 ```bash
-docker exec autopay-relayer npm run cli -- <command>
+docker exec Cadence-relayer npm run cli -- <command>
 ```
 
 ---
@@ -215,7 +215,7 @@ npm install
 npm run build
 
 # Set environment
-export DATABASE_URL=postgres://user:pass@your-provider.com:5432/autopay
+export DATABASE_URL=postgres://user:pass@your-provider.com:5432/Cadence
 export RELAYER_PRIVATE_KEY=0x...
 export ARC_TESTNET_RPC=https://rpc.testnet.arc.network
 
@@ -261,7 +261,7 @@ Monitor: `GET https://YOUR-URL/health` and alert on non-200 responses.
 ### Logs
 
 - **Railway**: Service > **Logs** tab for live streaming
-- **Docker**: `docker logs -f autopay-relayer`
+- **Docker**: `docker logs -f Cadence-relayer`
 - **Direct**: stdout/stderr (pipe to a log file or aggregation service)
 
 ---

@@ -1,8 +1,8 @@
-# AutoPay Overview
+# Cadence Overview
 
-## What is AutoPay?
+## What is Cadence?
 
-AutoPay is a non-custodial crypto subscription payment protocol. It lets users pay for recurring services with USDC while keeping full control of their funds. Merchants receive payments automatically each billing cycle without building any payment infrastructure.
+Cadence is a non-custodial crypto subscription payment protocol. It lets users pay for recurring services with USDC while keeping full control of their funds. Merchants receive payments automatically each billing cycle without building any payment infrastructure.
 
 **One-liner:** Stripe for crypto subscriptions - 50% cheaper, non-custodial, multi-chain.
 
@@ -39,7 +39,7 @@ sequenceDiagram
     autonumber
 
     actor S as Subscriber
-    participant C as AutoPay<br/>Contract
+    participant C as Cadence<br/>Contract
     participant R as Relayer
     actor M as Merchant
 
@@ -91,7 +91,7 @@ Subscribers can revoke a policy at any time. Merchants cannot change the charge 
 
 ### Non-Custodial
 
-Funds stay in the subscriber's wallet until each charge is executed. AutoPay never holds or pools user funds. The smart contract can only pull the exact charge amount at the agreed interval.
+Funds stay in the subscriber's wallet until each charge is executed. Cadence never holds or pools user funds. The smart contract can only pull the exact charge amount at the agreed interval.
 
 ### Relayer
 
@@ -105,7 +105,7 @@ Merchants don't need to run any blockchain infrastructure - they just receive we
 
 ### Protocol Fee
 
-AutoPay charges a 2.5% fee on each payment. For a 10 USDC charge, the merchant receives 9.75 USDC and 0.25 USDC goes to the protocol. This is roughly half what traditional payment processors charge.
+Cadence charges a 2.5% fee on each payment. For a 10 USDC charge, the merchant receives 9.75 USDC and 0.25 USDC goes to the protocol. This is roughly half what traditional payment processors charge.
 
 ---
 
@@ -117,11 +117,11 @@ The system has three main components:
 |-----------|-------------|-------------|
 | **Smart contract** (PolicyManager) | Stores subscription policies, executes charges, enforces limits | Deployed on-chain |
 | **Relayer** | Indexes events, triggers charges, sends webhooks, serves metadata API | Operator / self-hosted |
-| **Frontend** | Subscriber UI for managing subscriptions | Hosted by merchant or AutoPay |
+| **Frontend** | Subscriber UI for managing subscriptions | Hosted by merchant or Cadence |
 
 ### Current Network
 
-AutoPay is live on **Arc Testnet** with USDC. Multi-chain support is powered by [Circle Gateway](https://developers.circle.com/gateway/references/supported-blockchains) — subscribers can pay from any supported chain and funds are automatically bridged to the merchant.
+Cadence is live on **Arc Testnet** with USDC. Multi-chain support is powered by [Circle Gateway](https://developers.circle.com/gateway/references/supported-blockchains) — subscribers can pay from any supported chain and funds are automatically bridged to the merchant.
 
 #### Supported Chains (via Circle Gateway)
 
@@ -160,7 +160,7 @@ AutoPay is live on **Arc Testnet** with USDC. Multi-chain support is powered by 
 
 ## Safety & Trust
 
-AutoPay is designed with subscriber protection as a priority:
+Cadence is designed with subscriber protection as a priority:
 
 - **Spending caps** - Every subscription has a maximum total that can ever be charged
 - **Fixed amounts** - Merchants cannot change the charge amount after creation
@@ -173,7 +173,7 @@ AutoPay is designed with subscriber protection as a priority:
 
 ## Pricing
 
-| | Traditional (Stripe) | AutoPay |
+| | Traditional (Stripe) | Cadence |
 |---|---|---|
 | Transaction fee | ~3-5% | 2.5% |
 | Monthly fee | $0-25+ | None |

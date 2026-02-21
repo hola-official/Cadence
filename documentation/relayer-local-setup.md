@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide walks you through setting up and running the AutoPay relayer on your local machine for development and testing. The relayer indexes policy events from Arc Testnet, executes charges when subscriptions are due, and sends webhooks to merchants.
+This guide walks you through setting up and running the Cadence relayer on your local machine for development and testing. The relayer indexes policy events from Arc Testnet, executes charges when subscriptions are due, and sends webhooks to merchants.
 
 ---
 
@@ -19,8 +19,8 @@ This guide walks you through setting up and running the AutoPay relayer on your 
 ```bash
 cd relayer
 npm install
-docker run -d --name autopay-db \
-  -e POSTGRES_DB=autopay -e POSTGRES_USER=autopay -e POSTGRES_PASSWORD=password \
+docker run -d --name Cadence-db \
+  -e POSTGRES_DB=Cadence -e POSTGRES_USER=Cadence -e POSTGRES_PASSWORD=password \
   -p 5432:5432 postgres:16-alpine
 cp .env.example .env    # then edit with your values
 npm run cli -- db:migrate
@@ -43,15 +43,15 @@ npm install
 **Option A: Docker (recommended for local dev)**
 
 ```bash
-docker run -d --name autopay-db \
-  -e POSTGRES_DB=autopay \
-  -e POSTGRES_USER=autopay \
+docker run -d --name Cadence-db \
+  -e POSTGRES_DB=Cadence \
+  -e POSTGRES_USER=Cadence \
   -e POSTGRES_PASSWORD=password \
   -p 5432:5432 \
   postgres:16-alpine
 ```
 
-Connection string: `postgres://autopay:password@localhost:5432/autopay`
+Connection string: `postgres://Cadence:password@localhost:5432/Cadence`
 
 **Option B: Managed Database**
 
@@ -72,7 +72,7 @@ Edit `.env` with your values:
 
 ```bash
 # Required
-DATABASE_URL=postgres://autopay:password@localhost:5432/autopay
+DATABASE_URL=postgres://Cadence:password@localhost:5432/Cadence
 RELAYER_PRIVATE_KEY=0x...  # Your relayer wallet private key
 
 # Optional
@@ -138,7 +138,7 @@ npm run cli -- status
 Expected output:
 
 ```
-=== AutoPay Relayer Status ===
+=== Cadence Relayer Status ===
 
 Arc Testnet (5042002):
   Last indexed block: 25315000
@@ -218,7 +218,7 @@ To start fresh:
 
 ```bash
 # Stop the relayer first, then:
-docker exec -it autopay-db psql -U autopay -d autopay -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+docker exec -it Cadence-db psql -U Cadence -d Cadence -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
 # Re-run migrations
 npm run cli -- db:migrate
@@ -239,13 +239,13 @@ Ensure all required vars are set in `.env`:
 Check Docker is running:
 
 ```bash
-docker ps | grep autopay-db
+docker ps | grep Cadence-db
 ```
 
 Start it if stopped:
 
 ```bash
-docker start autopay-db
+docker start Cadence-db
 ```
 
 ### "Insufficient funds for gas"

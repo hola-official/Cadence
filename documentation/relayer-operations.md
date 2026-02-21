@@ -13,7 +13,7 @@ This guide covers day-to-day relayer operations: CLI commands, webhook managemen
 npm run cli -- <command> [options]
 
 # Docker
-docker exec autopay-relayer npm run cli -- <command> [options]
+docker exec Cadence-relayer npm run cli -- <command> [options]
 ```
 
 ---
@@ -45,7 +45,7 @@ npm run cli -- status
 Output:
 
 ```
-=== AutoPay Relayer Status ===
+=== Cadence Relayer Status ===
 
 Arc Testnet (5042002):
   Last indexed block: 25315000
@@ -170,7 +170,7 @@ Register a merchant's webhook configuration. Running this command again with the
 ```bash
 npm run cli -- merchant:add \
   --address 0xMERCHANT_ADDRESS \
-  --webhook-url https://merchant.com/webhooks/autopay \
+  --webhook-url https://merchant.com/webhooks/Cadence \
   --webhook-secret your_secret_here
 ```
 
@@ -180,7 +180,7 @@ npm run cli -- merchant:add \
 | `--webhook-url <url>` | Yes | URL to receive webhooks |
 | `--webhook-secret <secret>` | Yes | Secret for HMAC-SHA256 signing |
 
-The webhook secret is used to sign payloads with HMAC-SHA256. Merchants verify the signature from the `X-AutoPay-Signature` header. See the [Backend Integration Guide](./sdk-backend.md) for verification code.
+The webhook secret is used to sign payloads with HMAC-SHA256. Merchants verify the signature from the `X-Cadence-Signature` header. See the [Backend Integration Guide](./sdk-backend.md) for verification code.
 
 #### Running against a hosted relayer (Railway)
 
@@ -219,7 +219,7 @@ Output:
 === Registered Merchants ===
 
 Address: 0x742d35cc6634c0532925a3b844bc9e7595f...
-  Webhook URL: https://acme.com/webhooks/autopay
+  Webhook URL: https://acme.com/webhooks/Cadence
   Webhook Secret: (configured)
   Registered: 2026-02-05T10:30:00.000Z
 ```
@@ -450,8 +450,8 @@ When events occur (charges, policy changes), the relayer sends webhooks to regis
 
 Every webhook is signed with the merchant's webhook secret using HMAC-SHA256:
 
-- Header: `X-AutoPay-Signature` contains the hex-encoded HMAC
-- Header: `X-AutoPay-Timestamp` contains the ISO 8601 timestamp
+- Header: `X-Cadence-Signature` contains the hex-encoded HMAC
+- Header: `X-Cadence-Timestamp` contains the ISO 8601 timestamp
 
 ### Delivery Settings
 
@@ -492,19 +492,19 @@ Set `LOG_LEVEL` to control verbosity:
 
 ```bash
 # View recent policies
-docker exec -it autopay-db psql -U autopay -d autopay \
+docker exec -it Cadence-db psql -U Cadence -d Cadence \
   -c "SELECT id, payer, merchant, active, created_at FROM policies ORDER BY created_at DESC LIMIT 5;"
 
 # Check pending charges
-docker exec -it autopay-db psql -U autopay -d autopay \
+docker exec -it Cadence-db psql -U Cadence -d Cadence \
   -c "SELECT id, policy_id, status, attempt_count FROM charges WHERE status = 'pending';"
 
 # View pending webhooks
-docker exec -it autopay-db psql -U autopay -d autopay \
+docker exec -it Cadence-db psql -U Cadence -d Cadence \
   -c "SELECT id, event_type, status, attempts FROM webhooks WHERE status = 'pending';"
 
 # Check failed webhooks
-docker exec -it autopay-db psql -U autopay -d autopay \
+docker exec -it Cadence-db psql -U Cadence -d Cadence \
   -c "SELECT id, event_type, attempts, last_attempt_at FROM webhooks WHERE status = 'failed';"
 ```
 
@@ -531,7 +531,7 @@ End-to-end walkthrough for onboarding a new merchant:
 # 1. Register the merchant's webhook
 npm run cli -- merchant:add \
   --address 0x742d35Cc6634C0532925a3b844Bc9e7595f2BA53e \
-  --webhook-url https://acme.com/webhooks/autopay \
+  --webhook-url https://acme.com/webhooks/Cadence \
   --webhook-secret whsec_abc123
 
 # 2. Create a metadata JSON file

@@ -1,12 +1,12 @@
 # Merchant Guide
 
-This guide is for businesses and creators who want to accept recurring crypto payments through AutoPay. No blockchain experience required.
+This guide is for businesses and creators who want to accept recurring crypto payments through Cadence. No blockchain experience required.
 
 ---
 
-## Why AutoPay?
+## Why Cadence?
 
-| | Traditional Billing (Stripe) | AutoPay |
+| | Traditional Billing (Stripe) | Cadence |
 |---|---|---|
 | **Transaction fee** | 2.9% + $0.30 | 2.5% flat |
 | **Monthly platform fee** | $0–25+ | None |
@@ -39,7 +39,7 @@ This guide is for businesses and creators who want to accept recurring crypto pa
 
 ### What You Receive
 
-Each billing cycle, the relayer (AutoPay's background service) automatically:
+Each billing cycle, the relayer (Cadence's background service) automatically:
 
 1. Charges the subscriber's wallet
 2. Sends USDC directly to your merchant wallet (minus 2.5% protocol fee)
@@ -87,7 +87,7 @@ Contact the relayer operator (or self-host - see [Deployment Guide](./relayer-de
 The operator runs:
 
 ```
-merchant:add --address 0xYOUR_ADDRESS --webhook-url https://yoursite.com/webhooks/autopay --webhook-secret your_secret
+merchant:add --address 0xYOUR_ADDRESS --webhook-url https://yoursite.com/webhooks/Cadence --webhook-secret your_secret
 ```
 
 ### Step 3: Set Up Your Subscription Plans
@@ -129,7 +129,7 @@ The relayer operator registers this metadata and provides you with a **metadata 
 
 ### Step 4: Handle Webhook Notifications
 
-When subscription events occur, AutoPay sends HTTP POST requests to your webhook URL. Your backend uses these to manage customer access.
+When subscription events occur, Cadence sends HTTP POST requests to your webhook URL. Your backend uses these to manage customer access.
 
 | Event | What happened | Recommended action |
 |-------|--------------|-------------------|
@@ -141,13 +141,13 @@ When subscription events occur, AutoPay sends HTTP POST requests to your webhook
 
 Each webhook includes the subscriber's wallet address, policy ID, amounts, and a cryptographic signature you can verify for security.
 
-> **Developer needed?** Setting up a webhook endpoint requires a backend developer. Install `@autopayprotocol/sdk` for typed webhook verification, checkout URL building, and USDC amount helpers. See the [Backend Integration Guide](./sdk-backend.md) for implementation details.
+> **Developer needed?** Setting up a webhook endpoint requires a backend developer. Install `cadence-sdk` for typed webhook verification, checkout URL building, and USDC amount helpers. See the [Backend Integration Guide](./sdk-backend.md) for implementation details.
 
 ### Step 5: Build or Embed a Checkout Page
 
 You have two options:
 
-1. **Use the AutoPay frontend** - Point subscribers to the hosted checkout with your plan details pre-filled
+1. **Use the Cadence frontend** - Point subscribers to the hosted checkout with your plan details pre-filled
 2. **Build your own** - See the [Checkout Example](./merchant-checkout-example.md) for a full merchant server with checkout links
 
 ---
@@ -186,7 +186,7 @@ Each plan gets its own metadata entry with a unique ID.
 
 ### Refunds
 
-AutoPay does not have a built-in refund mechanism. To refund a subscriber:
+Cadence does not have a built-in refund mechanism. To refund a subscriber:
 
 1. Send USDC directly from your merchant wallet to the subscriber's wallet address
 2. The subscriber's wallet address is included in every webhook payload
@@ -218,7 +218,7 @@ Keep records of any refunds you issue for your own accounting.
 
 For a merchant processing $10,000/month:
 
-| | Stripe | AutoPay |
+| | Stripe | Cadence |
 |---|---|---|
 | Fee | ~$320 (3.2%) | $250 (2.5%) |
 | Settlement | 2–7 days | Instant |
@@ -231,11 +231,11 @@ For a merchant processing $10,000/month:
 
 ### Webhook Verification
 
-Every webhook from AutoPay includes an HMAC-SHA256 signature in the `X-AutoPay-Signature` header. Always verify this signature to ensure notifications are genuine. The `@autopayprotocol/sdk` package handles this in one line:
+Every webhook from Cadence includes an HMAC-SHA256 signature in the `X-Cadence-Signature` header. Always verify this signature to ensure notifications are genuine. The `cadence-sdk` package handles this in one line:
 
 ```typescript
-import { verifyWebhook } from '@autopayprotocol/sdk'
-const event = verifyWebhook(rawBody, req.headers['x-autopay-signature'], secret)
+import { verifyWebhook } from 'cadence-sdk'
+const event = verifyWebhook(rawBody, req.headers['x-Cadence-signature'], secret)
 ```
 
 See the [Backend Integration Guide](./sdk-backend.md#signature-verification) for full details.
@@ -246,11 +246,11 @@ Your merchant wallet receives all subscription payments. Protect it accordingly:
 
 - Use a hardware wallet or multisig for production
 - Never share your private key
-- Consider a separate wallet for AutoPay to isolate funds
+- Consider a separate wallet for Cadence to isolate funds
 
 ### Subscriber Privacy
 
-AutoPay requires only a wallet address - no names, emails, or card numbers are collected on-chain. If you need customer contact info, collect it separately through your own registration flow.
+Cadence requires only a wallet address - no names, emails, or card numbers are collected on-chain. If you need customer contact info, collect it separately through your own registration flow.
 
 ---
 
@@ -271,7 +271,7 @@ See the [Deployment Guide](./relayer-deployment.md) for setup instructions. A ba
 
 > **This feature is not yet available.** Join the waitlist to be notified when it launches.
 
-Don't want to self-host? **Relayer as a Service** is a managed relayer that you can deploy in one click from the AutoPay dashboard.
+Don't want to self-host? **Relayer as a Service** is a managed relayer that you can deploy in one click from the Cadence dashboard.
 
 ### What You Get
 
@@ -283,7 +283,7 @@ Don't want to self-host? **Relayer as a Service** is a managed relayer that you 
 
 ### How It Works
 
-1. Connect your merchant wallet in the AutoPay dashboard
+1. Connect your merchant wallet in the Cadence dashboard
 2. Click **Deploy Relayer**
 3. Configure your webhook URL and plans through the UI
 4. Share your checkout link — everything else is handled for you
@@ -297,7 +297,7 @@ Relayer as a Service will be billed monthly based on usage (active subscriptions
 ## FAQ
 
 <details>
-<summary>Do I need to understand blockchain to use AutoPay?</summary>
+<summary>Do I need to understand blockchain to use Cadence?</summary>
 
 For basic setup, no. You need a wallet address and a backend that handles webhook notifications. The blockchain details are abstracted away. For custom integrations, basic familiarity with Ethereum addresses and USDC helps.
 

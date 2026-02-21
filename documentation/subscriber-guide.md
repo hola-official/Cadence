@@ -1,6 +1,6 @@
 # Subscriber Guide
 
-This guide explains how AutoPay subscriptions work from the subscriber's perspective - how to subscribe, manage, and cancel your subscriptions.
+This guide explains how Cadence subscriptions work from the subscriber's perspective - how to subscribe, manage, and cancel your subscriptions.
 
 ---
 
@@ -8,7 +8,7 @@ This guide explains how AutoPay subscriptions work from the subscriber's perspec
 
 ### 1. Create a Wallet
 
-When you first visit an AutoPay-powered checkout, you'll create a wallet using a **passkey** (like Face ID or fingerprint). No seed phrases, no browser extensions - just your biometric.
+When you first visit an Cadence-powered checkout, you'll create a wallet using a **passkey** (like Face ID or fingerprint). No seed phrases, no browser extensions - just your biometric.
 
 This creates a smart wallet tied to your device. Your wallet address is the same across all supported chains.
 
@@ -20,7 +20,7 @@ Your wallet needs USDC to pay for subscriptions. You can transfer USDC from anot
 
 ### 3. Approve USDC Spending
 
-The first time you use AutoPay, you'll approve the AutoPay smart contract to charge USDC from your wallet. This is a one-time setup step.
+The first time you use Cadence, you'll approve the Cadence smart contract to charge USDC from your wallet. This is a one-time setup step.
 
 **Is this safe?** Yes. The smart contract can only charge you according to active subscription policies that you've created. It cannot drain your wallet or charge you arbitrary amounts. See [Safety & Protections](#safety--protections) below for details.
 
@@ -76,7 +76,7 @@ After cancellation:
 - The merchant is notified immediately
 - Whether you retain access until the end of the billing period depends on the merchant's policy
 
-> **Note:** AutoPay does not process refunds for past charges. Contact the merchant directly for refund requests.
+> **Note:** Cadence does not process refunds for past charges. Contact the merchant directly for refund requests.
 
 ---
 
@@ -106,11 +106,11 @@ If your subscription is cancelled due to failed payments:
 
 ## Safety & Protections
 
-AutoPay is designed to protect subscribers. Here's how:
+Cadence is designed to protect subscribers. Here's how:
 
 ### Your Funds Stay in Your Wallet
 
-AutoPay is **non-custodial**. Your USDC remains in your wallet at all times. The smart contract only pulls the exact charge amount at the scheduled interval. No one - not AutoPay, not the merchant - can access your funds outside of your active subscription policies.
+Cadence is **non-custodial**. Your USDC remains in your wallet at all times. The smart contract only pulls the exact charge amount at the scheduled interval. No one - not Cadence, not the merchant - can access your funds outside of your active subscription policies.
 
 ### Spending Caps
 
@@ -171,7 +171,7 @@ No. The charge amount is locked in the smart contract when you subscribe. The me
 <details>
 <summary>What if I want a refund?</summary>
 
-AutoPay does not handle refunds - contact the merchant directly. Since all charges are on-chain, there's a clear record of every payment.
+Cadence does not handle refunds - contact the merchant directly. Since all charges are on-chain, there's a clear record of every payment.
 
 </details>
 
@@ -192,7 +192,7 @@ Yes. You can have as many active subscriptions as you want, to different merchan
 <details>
 <summary>What blockchain does this use?</summary>
 
-AutoPay runs on **Arc Testnet** using USDC. You can fund your wallet from 12+ chains (Ethereum, Polygon, Arbitrum, Base, Solana, and more) via Circle Gateway — funds are automatically bridged to Arc.
+Cadence runs on **Arc Testnet** using USDC. You can fund your wallet from 12+ chains (Ethereum, Polygon, Arbitrum, Base, Solana, and more) via Circle Gateway — funds are automatically bridged to Arc.
 
 </details>
 
