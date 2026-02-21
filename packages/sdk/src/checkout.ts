@@ -1,4 +1,4 @@
-import { AutoPayCheckoutError } from './errors'
+import { CadenceCheckoutError } from './errors'
 import { DEFAULT_CHECKOUT_BASE_URL, intervals as presetIntervals, MIN_INTERVAL, MAX_INTERVAL } from './constants'
 import type { CheckoutOptions, IntervalPreset, SuccessRedirect } from './types'
 
@@ -15,7 +15,7 @@ export function resolveInterval(interval: IntervalPreset | number): number {
   if (typeof interval === 'number') return interval
   const seconds = INTERVAL_MAP[interval]
   if (!seconds) {
-    throw new AutoPayCheckoutError(
+    throw new CadenceCheckoutError(
       `Invalid interval preset "${interval}". Use: ${Object.keys(INTERVAL_MAP).join(', ')} or a number of seconds.`,
     )
   }
@@ -55,40 +55,40 @@ export function createCheckoutUrl(options: CheckoutOptions): string {
 
   // Validate merchant address
   if (!merchant || !isValidAddress(merchant)) {
-    throw new AutoPayCheckoutError(`Invalid merchant address: ${merchant}`)
+    throw new CadenceCheckoutError(`Invalid merchant address: ${merchant}`)
   }
 
   // Validate amount
   if (typeof amount !== 'number' || amount <= 0 || !Number.isFinite(amount)) {
-    throw new AutoPayCheckoutError(`Invalid amount: ${amount}. Must be a positive number.`)
+    throw new CadenceCheckoutError(`Invalid amount: ${amount}. Must be a positive number.`)
   }
 
   // Resolve and validate interval
   const intervalSeconds = resolveInterval(interval)
   if (intervalSeconds < MIN_INTERVAL || intervalSeconds > MAX_INTERVAL) {
-    throw new AutoPayCheckoutError(
+    throw new CadenceCheckoutError(
       `Interval ${intervalSeconds}s out of range. Must be between ${MIN_INTERVAL}s and ${MAX_INTERVAL}s.`,
     )
   }
 
   // Validate URLs
   if (!isValidUrl(metadataUrl)) {
-    throw new AutoPayCheckoutError(`Invalid metadata URL: ${metadataUrl}`)
+    throw new CadenceCheckoutError(`Invalid metadata URL: ${metadataUrl}`)
   }
   if (!isValidUrl(successUrl)) {
-    throw new AutoPayCheckoutError(`Invalid success URL: ${successUrl}`)
+    throw new CadenceCheckoutError(`Invalid success URL: ${successUrl}`)
   }
   if (!isValidUrl(cancelUrl)) {
-    throw new AutoPayCheckoutError(`Invalid cancel URL: ${cancelUrl}`)
+    throw new CadenceCheckoutError(`Invalid cancel URL: ${cancelUrl}`)
   }
 
   // Validate spending cap
   if (spendingCap !== undefined) {
     if (typeof spendingCap !== 'number' || spendingCap <= 0 || !Number.isFinite(spendingCap)) {
-      throw new AutoPayCheckoutError(`Invalid spending cap: ${spendingCap}. Must be a positive number.`)
+      throw new CadenceCheckoutError(`Invalid spending cap: ${spendingCap}. Must be a positive number.`)
     }
     if (spendingCap < amount) {
-      throw new AutoPayCheckoutError(`Spending cap (${spendingCap}) must be >= amount (${amount}).`)
+      throw new CadenceCheckoutError(`Spending cap (${spendingCap}) must be >= amount (${amount}).`)
     }
   }
 
@@ -127,10 +127,10 @@ export function parseSuccessRedirect(queryString: string): SuccessRedirect {
   const txHash = params.get('txHash')
 
   if (!policyId) {
-    throw new AutoPayCheckoutError('Missing policyId in success redirect URL')
+    throw new CadenceCheckoutError('Missing policyId in success redirect URL')
   }
   if (!txHash) {
-    throw new AutoPayCheckoutError('Missing txHash in success redirect URL')
+    throw new CadenceCheckoutError('Missing txHash in success redirect URL')
   }
 
   return { policyId, txHash }

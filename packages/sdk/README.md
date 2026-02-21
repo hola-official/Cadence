@@ -1,6 +1,6 @@
 # cadence-sdk
 
-Server-side utility package for merchants integrating with [Cadence](https://autopayprotocol.com).
+Server-side utility package for merchants integrating with [Cadence](https://Cadenceprotocol.com).
 
 This SDK does **not** interact with the blockchain or manage wallets. It provides typed, zero-dependency helpers for the things merchants need on their backend: building checkout URLs, verifying webhook signatures, and working with USDC amounts/intervals.
 
@@ -33,7 +33,7 @@ const url = createCheckoutUrl({
 ```typescript
 import { verifyWebhook } from 'cadence-sdk'
 
-const event = verifyWebhook(rawBody, req.headers['x-autopay-signature'], secret)
+const event = verifyWebhook(rawBody, req.headers['x-Cadence-signature'], secret)
 
 if (event.type === 'charge.succeeded') {
   console.log(event.data.amount)      // TypeScript knows this exists
@@ -92,17 +92,17 @@ if (event.type === 'charge.succeeded') {
 | `MIN_INTERVAL` | `60` (1 minute) |
 | `MAX_INTERVAL` | `31_536_000` (365 days) |
 | `MAX_RETRIES` | `3` |
-| `DEFAULT_CHECKOUT_BASE_URL` | `'https://autopayprotocol.com'` |
+| `DEFAULT_CHECKOUT_BASE_URL` | `'https://Cadenceprotocol.com'` |
 | `chains` | Chain configs (Polygon Amoy, Arbitrum Sepolia, Arc Testnet) |
 
 ### Error Classes
 
 | Class | Code |
 |-------|------|
-| `AutoPayError` | Base error with `code` property |
-| `AutoPayWebhookError` | `'WEBHOOK_VERIFICATION_FAILED'` |
-| `AutoPayCheckoutError` | `'INVALID_CHECKOUT_PARAMS'` |
-| `AutoPayMetadataError` | `'INVALID_METADATA'` |
+| `CadenceError` | Base error with `code` property |
+| `CadenceWebhookError` | `'WEBHOOK_VERIFICATION_FAILED'` |
+| `CadenceCheckoutError` | `'INVALID_CHECKOUT_PARAMS'` |
+| `CadenceMetadataError` | `'INVALID_METADATA'` |
 
 ### Webhook Event Types
 

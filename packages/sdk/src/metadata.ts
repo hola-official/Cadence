@@ -6,7 +6,7 @@ export interface MetadataValidationResult {
 }
 
 /**
- * Validate a metadata JSON object against the AutoPay metadata schema.
+ * Validate a metadata JSON object against the Cadence metadata schema.
  *
  * @example
  * ```ts

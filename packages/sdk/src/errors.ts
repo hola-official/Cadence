@@ -1,30 +1,30 @@
-export class AutoPayError extends Error {
+export class CadenceError extends Error {
   constructor(
     message: string,
     public readonly code: string,
   ) {
     super(message)
-    this.name = 'AutoPayError'
+    this.name = 'CadenceError'
   }
 }
 
-export class AutoPayWebhookError extends AutoPayError {
+export class CadenceWebhookError extends CadenceError {
   constructor(message: string) {
     super(message, 'WEBHOOK_VERIFICATION_FAILED')
-    this.name = 'AutoPayWebhookError'
+    this.name = 'CadenceWebhookError'
   }
 }
 
-export class AutoPayCheckoutError extends AutoPayError {
+export class CadenceCheckoutError extends CadenceError {
   constructor(message: string) {
     super(message, 'INVALID_CHECKOUT_PARAMS')
-    this.name = 'AutoPayCheckoutError'
+    this.name = 'CadenceCheckoutError'
   }
 }
 
-export class AutoPayMetadataError extends AutoPayError {
+export class CadenceMetadataError extends CadenceError {
   constructor(message: string) {
     super(message, 'INVALID_METADATA')
-    this.name = 'AutoPayMetadataError'
+    this.name = 'CadenceMetadataError'
   }
 }

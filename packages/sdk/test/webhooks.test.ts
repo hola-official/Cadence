@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { verifyWebhook, signPayload, verifySignature } from '../src/webhooks'
-import { AutoPayWebhookError } from '../src/errors'
+import { CadenceWebhookError } from '../src/errors'
 
 const SECRET = 'test-webhook-secret-123'
 
@@ -117,29 +117,29 @@ describe('verifyWebhook', () => {
 
   it('throws on missing signature', () => {
     const payload = makePayload('charge.succeeded')
-    expect(() => verifyWebhook(payload, undefined, SECRET)).toThrow(AutoPayWebhookError)
+    expect(() => verifyWebhook(payload, undefined, SECRET)).toThrow(CadenceWebhookError)
   })
 
   it('throws on invalid signature', () => {
     const payload = makePayload('charge.succeeded')
-    expect(() => verifyWebhook(payload, 'wrong', SECRET)).toThrow(AutoPayWebhookError)
+    expect(() => verifyWebhook(payload, 'wrong', SECRET)).toThrow(CadenceWebhookError)
   })
 
   it('throws on missing secret', () => {
     const payload = makePayload('charge.succeeded')
     const sig = signPayload(payload, SECRET)
-    expect(() => verifyWebhook(payload, sig, '')).toThrow(AutoPayWebhookError)
+    expect(() => verifyWebhook(payload, sig, '')).toThrow(CadenceWebhookError)
   })
 
   it('throws on unknown event type', () => {
     const payload = makePayload('unknown.event')
     const sig = signPayload(payload, SECRET)
-    expect(() => verifyWebhook(payload, sig, SECRET)).toThrow(AutoPayWebhookError)
+    expect(() => verifyWebhook(payload, sig, SECRET)).toThrow(CadenceWebhookError)
   })
 
   it('throws on invalid JSON', () => {
     const payload = 'not json'
     const sig = signPayload(payload, SECRET)
-    expect(() => verifyWebhook(payload, sig, SECRET)).toThrow(AutoPayWebhookError)
+    expect(() => verifyWebhook(payload, sig, SECRET)).toThrow(CadenceWebhookError)
   })
 })

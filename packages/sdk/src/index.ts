@@ -16,10 +16,10 @@ export type {
 
 // Errors
 export {
-  AutoPayError,
-  AutoPayWebhookError,
-  AutoPayCheckoutError,
-  AutoPayMetadataError,
+  CadenceError,
+  CadenceWebhookError,
+  CadenceCheckoutError,
+  CadenceMetadataError,
 } from './errors'
 
 // Constants

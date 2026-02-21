@@ -1,5 +1,5 @@
 import { createHmac } from 'crypto'
-import { AutoPayWebhookError } from './errors'
+import { CadenceWebhookError } from './errors'
 import type { WebhookEvent, WebhookEventType } from './types'
 
 const VALID_EVENT_TYPES: WebhookEventType[] = [
@@ -27,16 +27,16 @@ export function verifySignature(payload: string, signature: string, secret: stri
 }
 
 /**
- * Verify and parse a webhook from AutoPay.
+ * Verify and parse a webhook from Cadence.
  *
  * @param rawBody  - The raw request body string (JSON.stringify of the body)
- * @param signature - The `x-autopay-signature` header value
+ * @param signature - The `x-Cadence-signature` header value
  * @param secret   - Your webhook secret
  * @returns A fully-typed {@link WebhookEvent} with discriminated union on `type`
  *
  * @example
  * ```ts
- * const event = verifyWebhook(rawBody, req.headers['x-autopay-signature'], secret)
+ * const event = verifyWebhook(rawBody, req.headers['x-Cadence-signature'], secret)
  * if (event.type === 'charge.succeeded') {
  *   console.log(event.data.amount) // TypeScript knows this exists
  * }
@@ -44,35 +44,35 @@ export function verifySignature(payload: string, signature: string, secret: stri
  */
 export function verifyWebhook(rawBody: string, signature: string | undefined, secret: string): WebhookEvent {
   if (!signature) {
-    throw new AutoPayWebhookError('Missing x-autopay-signature header')
+    throw new CadenceWebhookError('Missing x-Cadence-signature header')
   }
 
   if (!secret) {
-    throw new AutoPayWebhookError('Webhook secret is not configured')
+    throw new CadenceWebhookError('Webhook secret is not configured')
   }
 
   if (!verifySignature(rawBody, signature, secret)) {
-    throw new AutoPayWebhookError('Invalid webhook signature')
+    throw new CadenceWebhookError('Invalid webhook signature')
   }
 
   let parsed: unknown
   try {
     parsed = JSON.parse(rawBody)
   } catch {
-    throw new AutoPayWebhookError('Invalid JSON in webhook body')
+    throw new CadenceWebhookError('Invalid JSON in webhook body')
   }
 
   const event = parsed as Record<string, unknown>
 
   if (!event || typeof event !== 'object') {
-    throw new AutoPayWebhookError('Webhook body is not an object')
+    throw new CadenceWebhookError('Webhook body is not an object')
   }
 
   // The relayer sends { event: "charge.succeeded", timestamp: "...", data: { ... } }
   // Normalize to our SDK type shape: { type: "charge.succeeded", ... }
   const eventType = (event.event ?? event.type) as string
   if (!eventType || !VALID_EVENT_TYPES.includes(eventType as WebhookEventType)) {
-    throw new AutoPayWebhookError(`Unknown webhook event type: ${eventType}`)
+    throw new CadenceWebhookError(`Unknown webhook event type: ${eventType}`)
   }
 
   return {

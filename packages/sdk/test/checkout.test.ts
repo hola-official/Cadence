@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { createCheckoutUrl, parseSuccessRedirect, resolveInterval } from '../src/checkout'
-import { AutoPayCheckoutError } from '../src/errors'
+import { CadenceCheckoutError } from '../src/errors'
 
 describe('resolveInterval', () => {
   it('resolves preset strings to seconds', () => {
@@ -17,7 +17,7 @@ describe('resolveInterval', () => {
   })
 
   it('throws on invalid preset', () => {
-    expect(() => resolveInterval('daily' as any)).toThrow(AutoPayCheckoutError)
+    expect(() => resolveInterval('daily' as any)).toThrow(CadenceCheckoutError)
   })
 })
 
@@ -35,7 +35,7 @@ describe('createCheckoutUrl', () => {
     const url = createCheckoutUrl(validOptions)
     const parsed = new URL(url)
 
-    expect(parsed.origin).toBe('https://autopayprotocol.com')
+    expect(parsed.origin).toBe('https://Cadenceprotocol.com')
     expect(parsed.pathname).toBe('/checkout')
     expect(parsed.searchParams.get('merchant')).toBe(validOptions.merchant)
     expect(parsed.searchParams.get('amount')).toBe('9.99')
@@ -53,8 +53,8 @@ describe('createCheckoutUrl', () => {
   })
 
   it('uses custom base URL', () => {
-    const url = createCheckoutUrl({ ...validOptions, baseUrl: 'https://staging.autopay.xyz' })
-    expect(url.startsWith('https://staging.autopay.xyz/checkout')).toBe(true)
+    const url = createCheckoutUrl({ ...validOptions, baseUrl: 'https://staging.Cadence.xyz' })
+    expect(url.startsWith('https://staging.Cadence.xyz/checkout')).toBe(true)
   })
 
   it('accepts numeric interval (seconds)', () => {
@@ -65,35 +65,35 @@ describe('createCheckoutUrl', () => {
 
   it('throws on invalid merchant address', () => {
     expect(() => createCheckoutUrl({ ...validOptions, merchant: 'not-an-address' }))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
   })
 
   it('throws on invalid amount', () => {
     expect(() => createCheckoutUrl({ ...validOptions, amount: -1 }))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
     expect(() => createCheckoutUrl({ ...validOptions, amount: 0 }))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
   })
 
   it('throws on interval out of range', () => {
     expect(() => createCheckoutUrl({ ...validOptions, interval: 10 }))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
     expect(() => createCheckoutUrl({ ...validOptions, interval: 365 * 86400 + 1 }))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
   })
 
   it('throws on invalid URLs', () => {
     expect(() => createCheckoutUrl({ ...validOptions, metadataUrl: 'not-a-url' }))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
     expect(() => createCheckoutUrl({ ...validOptions, successUrl: 'not-a-url' }))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
     expect(() => createCheckoutUrl({ ...validOptions, cancelUrl: 'not-a-url' }))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
   })
 
   it('throws when spending cap < amount', () => {
     expect(() => createCheckoutUrl({ ...validOptions, spendingCap: 5 }))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
   })
 })
 
@@ -107,11 +107,11 @@ describe('parseSuccessRedirect', () => {
 
   it('throws on missing policyId', () => {
     expect(() => parseSuccessRedirect('?txHash=0xdef456'))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
   })
 
   it('throws on missing txHash', () => {
     expect(() => parseSuccessRedirect('?policyId=0xabc123'))
-      .toThrow(AutoPayCheckoutError)
+      .toThrow(CadenceCheckoutError)
   })
 })
