@@ -4,7 +4,7 @@ import { ChainSelector } from '../chain/ChainSelector'
 import { Copy, Check, RefreshCw, Menu, ChevronDown } from 'lucide-react'
 import * as React from 'react'
 import type { NavItem } from './Sidebar'
-import { USDCLogo, ArbitrumLogo } from '../ui/chain-logos'
+import { USDCLogo, AvalancheLogo } from '../ui/chain-logos'
 
 interface HeaderProps {
   currentPage?: NavItem
@@ -77,8 +77,8 @@ export function Header({ currentPage = 'dashboard', onMenuToggle }: HeaderProps)
       <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
         {/* Chain indicator — desktop only, replace chain selector visually */}
         <div className="hidden md:flex items-center gap-1.5 rounded-lg bg-muted/40 border border-border/50 px-2.5 py-1.5">
-          <ArbitrumLogo size={14} />
-          <span className="text-[11px] font-medium text-muted-foreground">Arbitrum Sepolia</span>
+          <AvalancheLogo size={14} />
+          <span className="text-[11px] font-medium text-muted-foreground">Avalanche Fuji</span>
           <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
         </div>
 

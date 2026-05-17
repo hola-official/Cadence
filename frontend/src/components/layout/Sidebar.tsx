@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useAuth } from '../../hooks'
-import { ArbitrumLogo, USDCLogo } from '../ui/chain-logos'
+import { AvalancheLogo, USDCLogo } from '../ui/chain-logos'
 
 export type NavItem = 'dashboard' | 'subscriptions' | 'activity' | 'bridge' | 'settings' | 'demo' | 'docs'
 
@@ -87,8 +87,8 @@ export function Sidebar({ currentPage, onNavigate, mobileOpen = false, onClose }
         {/* ── Network Badge ── */}
         <div className="mx-3 mb-3">
           <div className="flex items-center gap-2 rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 py-2">
-            <ArbitrumLogo size={14} className="flex-shrink-0" />
-            <span className="text-[11px] font-medium text-white/50">Arbitrum Sepolia</span>
+            <AvalancheLogo size={14} className="flex-shrink-0" />
+            <span className="text-[11px] font-medium text-white/50">Avalanche Fuji</span>
             <div className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-400 flex-shrink-0 animate-pulse" />
           </div>
         </div>

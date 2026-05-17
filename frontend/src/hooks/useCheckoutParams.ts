@@ -7,8 +7,8 @@ function isValidAddress(value: string): value is `0x${string}` {
 
 function isValidUrl(value: string): boolean {
   try {
-    new URL(value)
-    return true
+    const url = new URL(value)
+    return url.protocol === 'https:' || (url.protocol === 'http:' && url.hostname === 'localhost')
   } catch {
     return false
   }

@@ -66,9 +66,11 @@ function createClientsForChain(chainKey: ChainKey) {
 export function ChainProvider({ children }: { children: React.ReactNode }) {
   const [chainKey, setChainKeyState] = React.useState<ChainKey>(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored && CHAIN_CONFIGS[stored]) {
+    if (stored && CHAIN_CONFIGS[stored] && CHAIN_CONFIGS[stored as ChainKey].enabled) {
       return stored as ChainKey
     }
+    // Clear stale stored value and fall back to default
+    localStorage.removeItem(STORAGE_KEY)
     return DEFAULT_CHAIN
   })
 

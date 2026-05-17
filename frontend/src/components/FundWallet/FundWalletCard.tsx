@@ -337,7 +337,7 @@ export function FundWalletCard({ destinationAddress, onSuccess }: FundWalletCard
           <div className="fund-destination">
             <div className="fund-destination-label">
               <span>Destination</span>
-              <span className="fund-destination-badge">Arbitrum Sepolia</span>
+              <span className="fund-destination-badge">Avalanche Fuji</span>
             </div>
             <div className="fund-destination-address">{destinationAddress}</div>
           </div>

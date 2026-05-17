@@ -9,12 +9,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // ── Configuration ──
 const PORT = process.env.PORT || 3002
-const MERCHANT_ADDRESS = process.env.MERCHANT_ADDRESS || '0x690C65EB2e2dd321ACe41a9865Aea3fAa98be2A5'
+const MERCHANT_ADDRESS = process.env.MERCHANT_ADDRESS || '0x429cB52eC6a7Fc28bC88431909Ae469977F6daCF'
 const CHECKOUT_URL = process.env.CHECKOUT_URL || 'http://localhost:5173/checkout'
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'test-secret-123'
-const RELAYER_URL = process.env.RELAYER_URL || 'http://localhost:3420'
-const ARB_RPC = process.env.ARB_RPC || 'https://sepolia-rollup.arbitrum.io/rpc'
-const POLICY_MANAGER = '0x9c75bf193445FbC5AA860DcbbF2E9ad84124bD63'
+const RELAYER_URL = process.env.RELAYER_URL || 'http://localhost:3001'
+const FUJI_RPC = process.env.FUJI_RPC || 'https://api.avax-test.network/ext/bc/C/rpc'
+const POLICY_MANAGER = '0xc4Eb29627B1b0FF88410Fad383F14492F4851FEe'
 
 // Supabase connection (same DB as relayer, merchant tables)
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://mxyjegfubewczsewmkvi.supabase.co'
@@ -79,7 +79,7 @@ app.post('/api/claim-policy', verifyAuth, async (req, res) => {
   // Verify the transaction on-chain first
   if (tx_hash) {
     try {
-      const rpcRes = await fetch(ARB_RPC, {
+      const rpcRes = await fetch(FUJI_RPC, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -488,7 +488,7 @@ app.get('/api/verify-policy', async (req, res) => {
   }
 
   try {
-    const rpcRes = await fetch(ARB_RPC, {
+    const rpcRes = await fetch(FUJI_RPC, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

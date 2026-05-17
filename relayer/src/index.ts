@@ -1,6 +1,6 @@
 import { loadConfig, getEnabledChains } from './config.js'
 import { runMigrations } from './db/migrations/index.js'
-import { closeDb } from './db/index.js'
+import { closeDb, getDb } from './db/index.js'
 import { startIndexerLoop } from './indexer/index.js'
 import { startExecutorLoop } from './executor/index.js'
 import { startWebhookSenderLoop } from './webhooks/index.js'
@@ -36,6 +36,27 @@ export async function startRelayer() {
   // Run migrations (after server is up so Railway healthcheck can pass)
   logger.info('Running database migrations...')
   await runMigrations(config.databaseUrl)
+
+  // Reconcile any charges left in 'pending' state from a previous crash.
+  // A pending charge older than 10 minutes couldn't still be in-flight —
+  // mark it failed so the policy isn't stuck waiting forever.
+  try {
+    const db = getDb(config.databaseUrl)
+    const stale = await db`
+      UPDATE charges
+      SET status = 'failed',
+          error_message = 'Abandoned: relayer restarted before confirmation',
+          completed_at = NOW()
+      WHERE status = 'pending'
+        AND created_at < NOW() - INTERVAL '10 minutes'
+      RETURNING id, policy_id
+    `
+    if (stale.length > 0) {
+      logger.warn({ count: stale.length }, 'Reconciled stale pending charges on startup')
+    }
+  } catch (err) {
+    logger.error({ err }, 'Failed to reconcile stale charges — continuing anyway')
+  }
 
   // Create abort controller for graceful shutdown
   const abortController = new AbortController()

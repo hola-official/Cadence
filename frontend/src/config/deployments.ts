@@ -19,6 +19,20 @@ export const CHAINS = {
 
 // Deployment addresses by chain ID
 export const DEPLOYMENTS: Record<number, Deployment> = {
+  "43113": {
+    "chainId": 43113,
+    "chainName": "avalanche-fuji",
+    "deployedAt": "2026-05-17T09:49:19Z",
+    "deployer": "0x429cB52eC6a7Fc28bC88431909Ae469977F6daCF",
+    "deployBlock": 55461417,
+    "contracts": {
+      "arbPolicyManager": "0xc4Eb29627B1b0FF88410Fad383F14492F4851FEe"
+    },
+    "addresses": {
+      "usdc": "0x5425890298aed601595a70AB815c96711a31Bc65",
+      "feeRecipient": "0x429cB52eC6a7Fc28bC88431909Ae469977F6daCF"
+    }
+  },
   "421614": {
     "chainId": 421614,
     "chainName": "arbitrum-sepolia",

@@ -67,9 +67,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         functionName: 'allowance',
         args: [account.address, chainConfig.policyManager],
       })
-      // Consider "set up" if allowance is >= 1000 USDC (arbitrary threshold for "unlimited")
-      const threshold = BigInt(1000) * BigInt(10 ** USDC_DECIMALS)
-      setIsWalletSetup(allowance >= threshold)
+      // Consider "set up" if allowance is >= half of maxUint256,
+      // meaning setupWallet() was called (which grants maxUint256)
+      setIsWalletSetup(allowance >= maxUint256 / 2n)
     } catch (err) {
       console.error('Failed to check wallet setup:', err)
       setIsWalletSetup(false)
@@ -108,7 +108,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
       setSetupStatus('Confirming...')
 
-      await bundlerClient.waitForUserOperationReceipt({ hash: opHash, timeout: 120_000 })
+      await bundlerClient.waitForUserOperationReceipt({ hash: opHash, timeout: 300_000 })
 
       setSetupStatus('Wallet ready!')
       setIsWalletSetup(true)

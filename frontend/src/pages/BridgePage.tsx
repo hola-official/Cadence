@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useWallet } from '../hooks'
 import { FundWalletCard } from '../components/FundWallet'
 import { Copy, Check, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
-import { USDCLogo, ArbitrumLogo } from '../components/ui/chain-logos'
+import { USDCLogo, AvalancheLogo } from '../components/ui/chain-logos'
 
 export function BridgePage() {
   const { account, balance, fetchBalance } = useWallet()
@@ -33,8 +33,8 @@ export function BridgePage() {
         <div className="bridge-mobile-balance">
           <div className="bridge-mobile-balance-left">
             <div className="flex items-center gap-1.5">
-              <ArbitrumLogo size={12} />
-              <span className="bridge-mobile-balance-label">Arb Balance</span>
+              <AvalancheLogo size={12} />
+              <span className="bridge-mobile-balance-label">Fuji Balance</span>
             </div>
             <div className="flex items-center gap-1.5">
               <USDCLogo size={14} />
@@ -147,12 +147,12 @@ export function BridgePage() {
 
         {/* ── Desktop: Sidebar ── */}
         <div className="bridge-sidebar hidden md:flex">
-          {/* Arb Balance */}
+          {/* Fuji Balance */}
           <div className="bridge-balance">
             <div className="bridge-balance-row">
               <div className="flex items-center gap-1.5">
-                <ArbitrumLogo size={14} />
-                <span className="bridge-balance-label">Arb Balance</span>
+                <AvalancheLogo size={14} />
+                <span className="bridge-balance-label">Fuji Balance</span>
               </div>
               <div className="bridge-balance-amount">
                 <USDCLogo size={14} />

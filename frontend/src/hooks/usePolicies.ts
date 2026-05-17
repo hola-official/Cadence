@@ -33,8 +33,12 @@ const PolicyCreatedEvent = parseAbiItem(
   'event PolicyCreated(bytes32 indexed policyId, address indexed payer, address indexed merchant, uint128 chargeAmount, uint32 interval, uint128 spendingCap, string metadataUrl)'
 )
 
-// Maximum block range per request (Arb RPC limits to 10,000)
-const MAX_RANGE = 9000n
+// Maximum block range per getLogs request — Fuji caps at 2048, Arbitrum at 10000
+const MAX_RANGE: Record<number, bigint> = {
+  43113: 2000n,   // Avalanche Fuji
+  421614: 9000n,  // Arbitrum Sepolia
+}
+const DEFAULT_MAX_RANGE = 2000n
 
 // Convert Supabase DbPolicy to OnChainPolicy
 function dbPolicyToOnChainPolicy(db: DbPolicy): OnChainPolicy {
@@ -201,7 +205,8 @@ export function usePolicies(): UsePoliciesReturn {
       }
 
       const currentBlock = await publicClient.getBlockNumber()
-      const fromBlock = currentBlock > MAX_RANGE ? currentBlock - MAX_RANGE : 0n
+      const maxRange = MAX_RANGE[chainConfig.chain.id] ?? DEFAULT_MAX_RANGE
+      const fromBlock = currentBlock > maxRange ? currentBlock - maxRange : 0n
 
       type PolicyCreatedLog = Log<bigint, number, false, typeof PolicyCreatedEvent, true>
 

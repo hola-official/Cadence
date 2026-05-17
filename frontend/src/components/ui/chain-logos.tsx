@@ -30,8 +30,8 @@ export function USDCLogo({ className, size = 16 }: LogoProps) {
   )
 }
 
-/** Arbitrum logo */
-export function ArbitrumLogo({ className, size = 16 }: LogoProps) {
+/** Avalanche / Fuji logo */
+export function AvalancheLogo({ className, size = 16 }: LogoProps) {
   return (
     <svg
       width={size}
@@ -40,20 +40,16 @@ export function ArbitrumLogo({ className, size = 16 }: LogoProps) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label="Arbitrum"
+      aria-label="Avalanche"
     >
-      <circle cx="16" cy="16" r="16" fill="#213147" />
-      <path
-        d="M18.17 14.73l1.66-2.9.73 1.3-1.28 2.23-1.11-.63zm-4.41 7.55l-.72 1.22L12 22.03l.55-.96.73 1.3-.55.96.73-1.3-3.18-1.85 4.98-8.65.73 1.3-4.25 7.35 1.02.6zm8.95-1.22l-.95 1.57h-1.45l-.72-1.22 1.11-.63 1.28 2.23-.73 1.3-1.66-2.9 1.11-.64.73 1.3-.73-1.3.01.01zM16 7.2l6.44 3.72v7.44L16 21.92l-6.44-3.56V10.92L16 7.2zm-4.28 12.87l1.49-2.56L14.51 19l-1.49 2.56-1.3-.49zm8.57 0l-1.3.49L17.5 19l1.29-1.49 1.49 2.56zm-4.29-9.82l-4.56 7.88.73 1.3 4.56-7.88 4.56 7.88.73-1.3-4.56-7.88h-.46z"
-        fill="#12AAFF"
-      />
-      <path
-        d="M16 7.2l6.44 3.72v7.44L16 21.92l-6.44-3.56V10.92L16 7.2z"
-        stroke="#12AAFF"
-        strokeWidth="0.5"
-        fill="none"
-        opacity="0.3"
-      />
+      <circle cx="16" cy="16" r="16" fill="#E84142" />
+      {/* A strokes */}
+      <path d="M16 9L24.5 23H21.5L16 12L10.5 23H7.5L16 9Z" fill="white" />
+      {/* Crossbar */}
+      <path d="M11 18.5H21V20.5H11Z" fill="white" />
     </svg>
   )
 }
+
+/** @deprecated Use AvalancheLogo — kept for any external references */
+export const ArbitrumLogo = AvalancheLogo

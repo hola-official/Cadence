@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { parseUnits } from 'viem'
 import { useCheckoutParams, useAuth, useWallet, useCreatePolicy, useChain } from '../hooks'
-import { isConfigured, USDC_DECIMALS } from '../config'
+import { isConfigured, USDC_DECIMALS, DEFAULT_CHAIN } from '../config'
 import type { CheckoutMetadata } from '../types/checkout'
 import {
   LoadingStep,
@@ -14,7 +14,7 @@ import {
   ProcessingStep,
   SuccessStep,
 } from '../components/checkout'
-import { USDCLogo, ArbitrumLogo } from '../components/ui/chain-logos'
+import { USDCLogo, AvalancheLogo } from '../components/ui/chain-logos'
 import { Zap } from 'lucide-react'
 
 type Step = 'loading' | 'error' | 'plan_summary' | 'auth' | 'wallet_setup' | 'fund_wallet' | 'confirm' | 'processing' | 'success'
@@ -33,9 +33,9 @@ export function CheckoutPage() {
   // User-editable spending cap — defaults to unlimited, adjustable in ConfirmStep
   const [userSpendingCap, setUserSpendingCap] = React.useState<string | undefined>(undefined)
 
-  // Ensure Arbitrum Sepolia is selected for checkout
+  // Lock checkout to the configured default chain
   React.useEffect(() => {
-    setChainKey('arbitrumSepolia')
+    setChainKey(DEFAULT_CHAIN)
   }, [setChainKey])
 
   // Estimated gas fee in USDC (Arc native currency is USDC; paymaster covers it but we show for transparency)
@@ -56,7 +56,14 @@ export function CheckoutPage() {
   React.useEffect(() => {
     if (!params) return
 
-    fetch(params.metadataUrl)
+    let timedOut = false
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => {
+      timedOut = true
+      controller.abort()
+    }, 30000)
+
+    fetch(params.metadataUrl, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`Failed to fetch metadata: ${res.status}`)
         return res.json()
@@ -68,8 +75,16 @@ export function CheckoutPage() {
         setMetadata(data)
       })
       .catch((err) => {
-        setFetchError(err instanceof Error ? err.message : 'Failed to load plan details')
+        if (err instanceof Error && err.name === 'AbortError') {
+          if (timedOut) setFetchError('Could not load plan details: request timed out')
+          // else: aborted by effect cleanup (React Strict Mode re-run), ignore
+        } else {
+          setFetchError(err instanceof Error ? err.message : 'Failed to load plan details')
+        }
       })
+      .finally(() => clearTimeout(timeoutId))
+
+    return () => controller.abort()
   }, [params])
 
   // Determine current step based on state
@@ -163,7 +178,7 @@ export function CheckoutPage() {
             </div>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">
-                <ArbitrumLogo size={10} />
+                <AvalancheLogo size={10} />
                 Testnet
               </div>
               {isLoggedIn && (
@@ -234,7 +249,7 @@ export function CheckoutPage() {
           <p className="text-[10px] text-muted-foreground">
             Powered by Cadence Protocol &middot; Non-custodial
           </p>
-          <ArbitrumLogo size={12} />
+          <AvalancheLogo size={12} />
         </div>
       </div>
     </div>

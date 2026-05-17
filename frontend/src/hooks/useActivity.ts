@@ -47,8 +47,12 @@ type ChargeLog = Log<bigint, number, false, typeof ChargeSucceededEvent, true>
 type CreateLog = Log<bigint, number, false, typeof PolicyCreatedEvent, true>
 type RevokeLog = Log<bigint, number, false, typeof PolicyRevokedEvent, true>
 
-// Maximum block range per request (Arb RPC limits to 10,000)
-const MAX_RANGE = 9000n
+// Maximum block range per getLogs request — Fuji caps at 2048, Arbitrum at 10000
+const MAX_RANGE: Record<number, bigint> = {
+  43113: 2000n,
+  421614: 9000n,
+}
+const DEFAULT_MAX_RANGE = 2000n
 
 // Delay between sequential requests to avoid rate limiting
 const REQUEST_DELAY = 300
@@ -163,7 +167,8 @@ export function useActivity(): UseActivityReturn {
       console.log('Supabase unavailable, falling back to contract events')
 
       const currentBlock = await publicClient.getBlockNumber()
-      const fromBlock = currentBlock > MAX_RANGE ? currentBlock - MAX_RANGE : 0n
+      const maxRange = MAX_RANGE[chainConfig.chain.id] ?? DEFAULT_MAX_RANGE
+      const fromBlock = currentBlock > maxRange ? currentBlock - maxRange : 0n
 
       // Fetch events sequentially with delays to avoid rate limiting
       const chargeLogs = await publicClient.getLogs({

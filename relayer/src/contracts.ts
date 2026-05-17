@@ -5,6 +5,17 @@ import type { ChainConfig } from './types.js'
 
 // Chain configurations with deployment addresses
 export const CHAIN_CONFIGS: Record<string, ChainConfig> = {
+  avalancheFuji: {
+    chainId: 43113,
+    name: 'Avalanche Fuji',
+    rpcUrl: process.env.FUJI_RPC || 'https://api.avax-test.network/ext/bc/C/rpc',
+    policyManagerAddress: '0xc4Eb29627B1b0FF88410Fad383F14492F4851FEe' as `0x${string}`,
+    startBlock: 55461417,
+    pollIntervalMs: 3000,
+    batchSize: 2048,
+    confirmations: 2,
+    enabled: true,
+  },
   arbitrumSepolia: {
     chainId: 421614,
     name: 'Arbitrum Sepolia',

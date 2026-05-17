@@ -74,7 +74,7 @@ export function useCreatePolicy(): UseCreatePolicyReturn {
 
         const { receipt } = await bundlerClient.waitForUserOperationReceipt({
           hash: opHash,
-          timeout: 120_000,
+          timeout: 300_000,
         })
 
         setHash(receipt.transactionHash)

@@ -1,5 +1,5 @@
 import { defineChain, type Chain } from 'viem'
-import { polygonAmoy, arbitrumSepolia } from 'viem/chains'
+import { polygonAmoy, arbitrumSepolia, avalancheFuji } from 'viem/chains'
 import { ContractAddress } from '@circle-fin/modular-wallets-core'
 import { DEPLOYMENTS } from './deployments'
 
@@ -55,6 +55,18 @@ export const CHAIN_CONFIGS: Record<string, ChainConfig> = {
     explorer: 'https://amoy.polygonscan.com',
     enabled: false,
   },
+  avalancheFuji: {
+    key: 'avalancheFuji',
+    chain: avalancheFuji,
+    name: 'Avalanche Fuji',
+    shortName: 'Fuji',
+    transportPath: 'avalancheFuji',
+    usdc: '0x5425890298aed601595a70AB815c96711a31Bc65',
+    policyManager: DEPLOYMENTS[43113]?.contracts.arbPolicyManager as `0x${string}` | undefined,
+    deployBlock: DEPLOYMENTS[43113]?.deployBlock,
+    explorer: 'https://testnet.snowtrace.io',
+    enabled: true,
+  },
   arbitrumSepolia: {
     key: 'arbitrumSepolia',
     chain: arbitrumSepolia,
@@ -65,7 +77,7 @@ export const CHAIN_CONFIGS: Record<string, ChainConfig> = {
     policyManager: DEPLOYMENTS[421614]?.contracts.arbPolicyManager as `0x${string}` | undefined,
     deployBlock: DEPLOYMENTS[421614]?.deployBlock,
     explorer: 'https://sepolia.arbiscan.io',
-    enabled: true,
+    enabled: false,
     // Arb's bundler requires minimum gas fees that the paymaster doesn't set correctly
     minGasFees: {
       maxPriorityFeePerGas: 1_000_000_000n, // 1 gwei
@@ -75,5 +87,5 @@ export const CHAIN_CONFIGS: Record<string, ChainConfig> = {
 }
 
 export const ENABLED_CHAINS = Object.values(CHAIN_CONFIGS).filter(c => c.enabled)
-export const DEFAULT_CHAIN = 'arbitrumSepolia'
+export const DEFAULT_CHAIN = 'avalancheFuji'
 export type ChainKey = keyof typeof CHAIN_CONFIGS
