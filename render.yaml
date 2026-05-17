@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: cadence-relayer
+    runtime: docker
+    dockerfilePath: ./relayer/Dockerfile
+    dockerContext: ./relayer
+    region: oregon
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      # ── Required secrets (fill in manually in Render dashboard) ──
+      - key: DATABASE_URL
+        sync: false
+      - key: RELAYER_PRIVATE_KEY
+        sync: false
+
+      # ── RPC endpoints ──
+      - key: FUJI_RPC
+        value: https://api.avax-test.network/ext/bc/C/rpc
+
+      # ── Optional tuning ──
+      - key: LOG_LEVEL
+        value: info
+      - key: RETRY_PRESET
+        value: standard
+      - key: NODE_ENV
+        value: production
