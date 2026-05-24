@@ -1,7 +1,7 @@
 {
-  "name": "autopay-webhook-receiver",
+  "name": "cadence-webhook-receiver",
   "version": "1.0.0",
-  "description": "Example webhook receiver for AutoPay merchant integration",
+  "description": "Example webhook receiver for Cadence Protocol merchant integration on Arc",
   "type": "module",
   "scripts": {
     "start": "node server.js",

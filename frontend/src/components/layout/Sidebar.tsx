@@ -11,12 +11,13 @@ import {
   BookOpen,
   ExternalLink,
   Zap,
+  Bot,
 } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useAuth } from '../../hooks'
-import { AvalancheLogo, USDCLogo } from '../ui/chain-logos'
+import { ArcLogo, USDCLogo } from '../ui/chain-logos'
 
-export type NavItem = 'dashboard' | 'subscriptions' | 'activity' | 'bridge' | 'settings' | 'demo' | 'docs'
+export type NavItem = 'dashboard' | 'subscriptions' | 'activity' | 'bridge' | 'agent' | 'settings' | 'demo' | 'docs'
 
 interface SidebarProps {
   currentPage: NavItem
@@ -26,11 +27,12 @@ interface SidebarProps {
 }
 
 // Main navigation items
-const mainNavItems: { id: NavItem; label: string; icon: React.ReactNode; description?: string }[] = [
+const mainNavItems: { id: NavItem; label: string; icon: React.ReactNode; description?: string; badge?: string }[] = [
   { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="h-4 w-4" /> },
   { id: 'subscriptions', label: 'Subscriptions', icon: <CreditCard className="h-4 w-4" /> },
   { id: 'activity', label: 'Activity', icon: <Activity className="h-4 w-4" /> },
   { id: 'bridge', label: 'Bridge', icon: <ArrowDownUp className="h-4 w-4" />, description: 'Move funds across chains' },
+  { id: 'agent', label: 'AI Agent', icon: <Bot className="h-4 w-4" />, badge: 'NEW' },
   { id: 'settings', label: 'Settings', icon: <Settings className="h-4 w-4" /> },
 ]
 
@@ -87,8 +89,8 @@ export function Sidebar({ currentPage, onNavigate, mobileOpen = false, onClose }
         {/* ── Network Badge ── */}
         <div className="mx-3 mb-3">
           <div className="flex items-center gap-2 rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 py-2">
-            <AvalancheLogo size={14} className="flex-shrink-0" />
-            <span className="text-[11px] font-medium text-white/50">Avalanche Fuji</span>
+            <ArcLogo size={14} className="flex-shrink-0" />
+            <span className="text-[11px] font-medium text-white/50">Arc Testnet</span>
             <div className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-400 flex-shrink-0 animate-pulse" />
           </div>
         </div>
@@ -122,6 +124,11 @@ export function Sidebar({ currentPage, onNavigate, mobileOpen = false, onClose }
                   {item.icon}
                 </span>
                 <span className="flex-1 text-left">{item.label}</span>
+                {item.badge && !isActive && (
+                  <span className="rounded-full bg-violet-500/20 border border-violet-500/30 px-1.5 py-0.5 text-[9px] font-bold text-violet-300 leading-none flex-shrink-0">
+                    {item.badge}
+                  </span>
+                )}
                 {isActive && (
                   <div className="h-1.5 w-1.5 rounded-full bg-violet-400/70 flex-shrink-0" />
                 )}

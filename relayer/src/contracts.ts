@@ -5,6 +5,17 @@ import type { ChainConfig } from './types.js'
 
 // Chain configurations with deployment addresses
 export const CHAIN_CONFIGS: Record<string, ChainConfig> = {
+  arcTestnet: {
+    chainId: 5042002,
+    name: 'Arc Testnet',
+    rpcUrl: process.env.ARC_RPC || 'https://rpc.testnet.arc.network',
+    policyManagerAddress: '0xe3463a10Cb69D9705A38cECac3cBC58AD76f5De1' as `0x${string}`,
+    startBlock: 26573469,
+    pollIntervalMs: 2000,
+    batchSize: 1000,
+    confirmations: 1,
+    enabled: true,
+  },
   avalancheFuji: {
     chainId: 43113,
     name: 'Avalanche Fuji',

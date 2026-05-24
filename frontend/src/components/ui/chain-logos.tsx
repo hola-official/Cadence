@@ -51,5 +51,30 @@ export function AvalancheLogo({ className, size = 16 }: LogoProps) {
   )
 }
 
+/** Arc Testnet logo */
+export function ArcLogo({ className, size = 16 }: LogoProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-label="Arc"
+    >
+      <circle cx="16" cy="16" r="16" fill="#1A1A2E" />
+      <path
+        d="M8 22C8 22 10 10 16 10C22 10 24 22 24 22"
+        stroke="#7C3AED"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <circle cx="16" cy="10" r="2" fill="#A78BFA" />
+    </svg>
+  )
+}
+
 /** @deprecated Use AvalancheLogo — kept for any external references */
 export const ArbitrumLogo = AvalancheLogo

@@ -15,6 +15,7 @@ import { estimateGas } from './gas-estimator.js'
 import { createLogger } from '../utils/logger.js'
 import { getPolicyByIdOnly } from '../db/policies.js'
 import { getChainConfig } from '../config.js'
+import { recordChargeReputation } from './reputation.js'
 
 const logger = createLogger('executor:charge')
 
@@ -188,6 +189,9 @@ export async function chargePolicy(
       { policyId, txHash: hash, amount, protocolFee },
       'Charge successful'
     )
+
+    // Record reputation on Arc ERC-8004 (non-blocking, only if AGENT_ID is set)
+    recordChargeReputation(config, policy.chain_id, policyId, hash).catch(() => {})
 
     return {
       success: true,

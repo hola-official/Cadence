@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { formatUSDC } from '../../types/subscriptions'
 import { usePolicies, useWallet, useChain, useMetadataBatch } from '../../hooks'
 import { TrendingDown, Calendar, CreditCard, Copy, Check, Send, ArrowUpRight } from 'lucide-react'
-import { USDCLogo, AvalancheLogo } from '../ui/chain-logos'
+import { USDCLogo, ArcLogo } from '../ui/chain-logos'
 
 interface StatsOverviewProps {
   address?: string
@@ -92,7 +92,7 @@ function MobileHeroStats({
             <span className="text-[14px] font-semibold text-white/30 mb-1">USDC</span>
           </div>
           <div className="flex items-center gap-1.5 mb-4">
-            <AvalancheLogo size={12} />
+            <ArcLogo size={12} />
             <span className="text-[11px] text-white/30 font-medium">{chainConfig.shortName}</span>
           </div>
 
@@ -220,7 +220,7 @@ export function StatsOverview({ address, copied = false, onCopy, onSend }: Stats
                 <span className="text-[11px] font-semibold text-white/40 uppercase tracking-widest">USDC Balance</span>
               </div>
               <div className="flex items-center gap-1.5 rounded-md bg-white/[0.06] border border-white/[0.08] px-2 py-1">
-                <AvalancheLogo size={12} />
+                <ArcLogo size={12} />
                 <span className="text-[10px] font-medium text-white/35">{chainConfig.shortName}</span>
               </div>
             </div>

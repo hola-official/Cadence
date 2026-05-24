@@ -1,14 +1,13 @@
 {
-  "name": "autopay-merchant-server-demo",
+  "name": "cadence-merchant-server-demo",
   "version": "1.0.0",
-  "description": "Example merchant server demonstrating AutoPay checkout integration",
+  "description": "Example merchant server demonstrating Cadence Protocol checkout integration on Arc",
   "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
   "dependencies": {
-    "@autopayprotocol/sdk": "^0.1.3",
     "@supabase/supabase-js": "^2.95.3",
     "dotenv": "^17.2.4",
     "express": "^4.21.0"

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "WebFetch(domain:docs.arc.io)",
+      "WebFetch(domain:developers.circle.com)",
+      "Bash(claude mcp *)"
+    ]
+  }
+}

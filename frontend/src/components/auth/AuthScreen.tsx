@@ -20,7 +20,7 @@ import {
   Zap,
   ExternalLink,
 } from 'lucide-react'
-import { USDCLogo, AvalancheLogo } from '../ui/chain-logos'
+import { USDCLogo, ArcLogo } from '../ui/chain-logos'
 
 type AuthTab = 'passkey' | 'recovery'
 
@@ -266,7 +266,7 @@ export function AuthScreen({ onNavigateDocs }: { onNavigateDocs?: () => void }) 
           Secured by Cadence Protocol
         </div>
         <div className="auth-scene-footer-meta">
-          <span className="flex items-center gap-1.5"><AvalancheLogo size={12} />Avalanche Fuji</span>
+          <span className="flex items-center gap-1.5"><ArcLogo size={12} />Arc Testnet</span>
           <div className="auth-footer-dot" />
           <span className="flex items-center gap-1.5"><USDCLogo size={12} />USDC Payments</span>
           <div className="auth-footer-dot" />

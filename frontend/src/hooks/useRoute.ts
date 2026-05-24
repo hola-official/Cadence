@@ -7,6 +7,7 @@ export type Route =
   | '/subscriptions'
   | '/activity'
   | '/bridge'
+  | '/agent'
   | '/settings'
   | '/demo'
   | '/docs'
@@ -14,13 +15,14 @@ export type Route =
 
 type RouteLayout = 'auth' | 'dashboard' | 'fullscreen'
 
-const DASHBOARD_ROUTES: Route[] = ['/dashboard', '/subscriptions', '/activity', '/bridge', '/settings', '/demo']
+const DASHBOARD_ROUTES: Route[] = ['/dashboard', '/subscriptions', '/activity', '/bridge', '/agent', '/settings', '/demo']
 
 const ROUTE_TO_NAV: Record<string, NavItem> = {
   '/dashboard': 'dashboard',
   '/subscriptions': 'subscriptions',
   '/activity': 'activity',
   '/bridge': 'bridge',
+  '/agent': 'agent',
   '/settings': 'settings',
   '/demo': 'demo',
   '/docs': 'docs',
@@ -31,6 +33,7 @@ const NAV_TO_ROUTE: Record<NavItem, Route> = {
   subscriptions: '/subscriptions',
   activity: '/activity',
   bridge: '/bridge',
+  agent: '/agent',
   settings: '/settings',
   demo: '/demo',
   docs: '/docs',
@@ -40,7 +43,7 @@ function pathToRoute(pathname: string): Route {
   // Strip trailing slash (but keep "/" as-is)
   const stripped = pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname
   const normalized = stripped === '' ? '/' : stripped
-  const valid: Route[] = ['/', '/dashboard', '/subscriptions', '/activity', '/bridge', '/settings', '/demo', '/docs', '/checkout']
+  const valid: Route[] = ['/', '/dashboard', '/subscriptions', '/activity', '/bridge', '/agent', '/settings', '/demo', '/docs', '/checkout']
   return valid.includes(normalized as Route) ? (normalized as Route) : '/'
 }
 

@@ -15,6 +15,7 @@ import {
   BridgePage,
   DocsPage,
   CheckoutPage,
+  AgentPage,
 } from './pages'
 import { NotConfiguredView, LoadingView } from './views'
 import { ArrowLeft } from 'lucide-react'
@@ -213,6 +214,8 @@ function App() {
         return <ActivityPage />
       case '/bridge':
         return <BridgePage />
+      case '/agent':
+        return <AgentPage />
       case '/settings':
         return <SettingsPage />
       case '/demo':

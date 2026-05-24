@@ -165,7 +165,7 @@ export const GATEWAY_SOURCE_CHAINS = [
   sonicTestnetConfig,
   worldChainSepoliaConfig,
   seiAtlanticConfig,
-  hyperEvmTestnetConfig,
+  // hyperEvmTestnetConfig — RPC endpoint currently returns 404
 ] as const
 
 export type GatewaySourceChain = typeof GATEWAY_SOURCE_CHAINS[number]

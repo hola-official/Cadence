@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Wallet, Copy, Check, ExternalLink, RefreshCw, ArrowRight, Send, Droplets, ArrowUpRight, Settings } from 'lucide-react'
 import { useWallet } from '../../hooks'
 import { formatUSDCString, shortenAddress } from '../../lib/utils'
-import { USDCLogo, AvalancheLogo } from '../ui/chain-logos'
+import { USDCLogo, ArcLogo } from '../ui/chain-logos'
 
 interface FundWalletStepProps {
   requiredAmount: string // e.g. "9.99"
@@ -135,7 +135,7 @@ export function FundWalletStep({ requiredAmount, gasEstimate, cancelUrl, onFunde
           className="flex flex-col items-center gap-2 p-3 rounded-xl border border-border bg-card hover:bg-muted/30 transition-colors group text-center"
         >
           <div className="w-9 h-9 rounded-lg bg-[#E84142]/10 flex items-center justify-center">
-            <AvalancheLogo size={22} />
+            <ArcLogo size={22} />
           </div>
           <div>
             <p className="text-xs font-medium leading-tight">Bridge</p>
@@ -178,10 +178,10 @@ export function FundWalletStep({ requiredAmount, gasEstimate, cancelUrl, onFunde
       {/* Tip */}
       <div className="rounded-lg bg-muted/50 px-3.5 py-2.5 mb-5 text-[11px] text-muted-foreground flex items-start gap-2">
         <div className="flex items-center gap-1 flex-shrink-0 mt-0.5">
-          <AvalancheLogo size={12} />
+          <ArcLogo size={12} />
           <USDCLogo size={12} />
         </div>
-        <p><span className="font-medium text-foreground">Tip:</span> Get testnet USDC from the Circle faucet, then send to your address above on <span className="font-medium text-foreground">Avalanche Fuji</span>. Balance updates automatically.</p>
+        <p><span className="font-medium text-foreground">Tip:</span> Get testnet USDC from the Circle faucet, then send to your address above on <span className="font-medium text-foreground">Arc Testnet</span>. Balance updates automatically.</p>
       </div>
 
       {/* Continue button */}

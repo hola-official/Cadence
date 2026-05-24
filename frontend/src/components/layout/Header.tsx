@@ -4,7 +4,7 @@ import { ChainSelector } from '../chain/ChainSelector'
 import { Copy, Check, RefreshCw, Menu, ChevronDown } from 'lucide-react'
 import * as React from 'react'
 import type { NavItem } from './Sidebar'
-import { USDCLogo, AvalancheLogo } from '../ui/chain-logos'
+import { USDCLogo, ArcLogo } from '../ui/chain-logos'
 
 interface HeaderProps {
   currentPage?: NavItem
@@ -16,6 +16,7 @@ const pageTitles: Record<NavItem, { title: string; subtitle: string }> = {
   subscriptions: { title: 'Subscriptions', subtitle: 'Manage your recurring payments' },
   activity: { title: 'Activity', subtitle: 'Transaction history' },
   bridge: { title: 'Bridge Funds', subtitle: 'Move USDC across chains' },
+  agent: { title: 'AI Agent', subtitle: 'Autonomous subscription intelligence on Arc' },
   demo: { title: 'SDK Demo', subtitle: 'Try the developer API' },
   docs: { title: 'Documentation', subtitle: 'Integration guides & references' },
   settings: { title: 'Settings', subtitle: 'Wallet preferences' },
@@ -77,8 +78,8 @@ export function Header({ currentPage = 'dashboard', onMenuToggle }: HeaderProps)
       <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
         {/* Chain indicator — desktop only, replace chain selector visually */}
         <div className="hidden md:flex items-center gap-1.5 rounded-lg bg-muted/40 border border-border/50 px-2.5 py-1.5">
-          <AvalancheLogo size={14} />
-          <span className="text-[11px] font-medium text-muted-foreground">Avalanche Fuji</span>
+          <ArcLogo size={14} />
+          <span className="text-[11px] font-medium text-muted-foreground">Arc Testnet</span>
           <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
         </div>
 

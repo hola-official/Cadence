@@ -104,7 +104,7 @@ export function PlanSummary({ metadata, metadataUrl, amount, interval, onContinu
         </div>
         <div className="flex justify-between">
           <span>Network</span>
-          <span className="font-medium text-foreground">Avalanche Fuji</span>
+          <span className="font-medium text-foreground">Arc Testnet</span>
         </div>
       </div>
 

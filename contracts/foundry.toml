@@ -10,3 +10,4 @@ optimizer-runs = 200
 [rpc_endpoints]
 arbitrum-sepolia = "${ARBITRUM_SEPOLIA_RPC}"
 fuji = "${FUJI_RPC}"
+arc = "${ARC_RPC}"

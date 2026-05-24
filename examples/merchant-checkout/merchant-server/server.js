@@ -1,9 +1,24 @@
 import 'dotenv/config'
 import express from 'express'
-import { verifyWebhook } from '@autopayprotocol/sdk'
+import { createHmac } from 'crypto'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import { createClient } from '@supabase/supabase-js'
+
+// Inline webhook verification (HMAC-SHA256)
+function verifyWebhook(rawBody, signature, secret) {
+  if (!signature) throw new Error('Missing x-cadence-signature header')
+  if (!secret) throw new Error('Webhook secret not configured')
+  const expected = createHmac('sha256', secret).update(rawBody).digest('hex')
+  // Constant-time comparison
+  let result = expected.length === signature.length ? 0 : 1
+  for (let i = 0; i < Math.min(expected.length, signature.length); i++) {
+    result |= expected.charCodeAt(i) ^ signature.charCodeAt(i)
+  }
+  if (result !== 0) throw new Error('Invalid webhook signature')
+  const parsed = JSON.parse(rawBody)
+  return { type: parsed.event ?? parsed.type, timestamp: parsed.timestamp, data: parsed.data }
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -12,9 +27,9 @@ const PORT = process.env.PORT || 3002
 const MERCHANT_ADDRESS = process.env.MERCHANT_ADDRESS || '0x429cB52eC6a7Fc28bC88431909Ae469977F6daCF'
 const CHECKOUT_URL = process.env.CHECKOUT_URL || 'http://localhost:5173/checkout'
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'test-secret-123'
-const RELAYER_URL = process.env.RELAYER_URL || 'http://localhost:3001'
-const FUJI_RPC = process.env.FUJI_RPC || 'https://api.avax-test.network/ext/bc/C/rpc'
-const POLICY_MANAGER = '0xc4Eb29627B1b0FF88410Fad383F14492F4851FEe'
+const RELAYER_URL = process.env.RELAYER_URL || 'https://cadence-relayer.onrender.com'
+const ARC_RPC = process.env.ARC_RPC || 'https://rpc.testnet.arc.network'
+const POLICY_MANAGER = '0xe3463a10Cb69D9705A38cECac3cBC58AD76f5De1'  // Arc Testnet
 
 // Supabase connection (same DB as relayer, merchant tables)
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://mxyjegfubewczsewmkvi.supabase.co'
@@ -79,7 +94,7 @@ app.post('/api/claim-policy', verifyAuth, async (req, res) => {
   // Verify the transaction on-chain first
   if (tx_hash) {
     try {
-      const rpcRes = await fetch(FUJI_RPC, {
+      const rpcRes = await fetch(ARC_RPC, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -156,7 +171,7 @@ app.post('/api/claim-policy', verifyAuth, async (req, res) => {
 // =====================================================================
 
 app.post('/webhook', async (req, res) => {
-  const timestamp = req.headers['x-Cadence-timestamp']
+  const timestamp = req.headers['x-cadence-timestamp']
 
   console.log(`\n📨 Webhook received at ${timestamp}`)
 
@@ -165,7 +180,7 @@ app.post('/webhook', async (req, res) => {
   if (WEBHOOK_SECRET) {
     try {
       const payload = JSON.stringify(req.body)
-      const signature = req.headers['x-Cadence-signature']
+      const signature = req.headers['x-cadence-signature']
       const verified = verifyWebhook(payload, signature, WEBHOOK_SECRET)
       event = verified.type
       data = verified.data
@@ -488,7 +503,7 @@ app.get('/api/verify-policy', async (req, res) => {
   }
 
   try {
-    const rpcRes = await fetch(FUJI_RPC, {
+    const rpcRes = await fetch(ARC_RPC, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

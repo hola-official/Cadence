@@ -6,6 +6,8 @@ import { getStatus } from '../db/index.js'
 import { getPlanMetadata, listAllPlanMetadata } from '../db/metadata.js'
 import { getEnabledChains, type RelayerConfig } from '../config.js'
 import { createLogger } from '../utils/logger.js'
+import { handleAgentChat } from './agent.js'
+import { handleInsights } from './x402.js'
 
 const logger = createLogger('api')
 
@@ -41,8 +43,8 @@ function parsePath(url: string): { path: string; params: URLSearchParams } {
 // CORS headers
 function setCorsHeaders(res: ServerResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Payment, X-Payment-Response')
 }
 
 export async function createApiServer(config: RelayerConfig): Promise<Server> {
@@ -98,6 +100,24 @@ export async function createApiServer(config: RelayerConfig): Promise<Server> {
       const logoMatch = path.match(/^\/logos\/([^/]+)$/)
       if (logoMatch && req.method === 'GET') {
         await handleLogo(logoMatch[1], res)
+        return
+      }
+
+      // Agent chat endpoint
+      if (path === '/agent/chat' && req.method === 'POST') {
+        await handleAgentChat(config, req, res)
+        return
+      }
+
+      // x402 insights — $0.001 USDC paywall
+      if (path === '/api/insights' && req.method === 'GET') {
+        await handleInsights(config, req, res)
+        return
+      }
+
+      // Arc RPC proxy — forwards JSON-RPC to the configured ARC_RPC (avoids browser CORS)
+      if (path === '/api/arc-rpc' && req.method === 'POST') {
+        await handleArcRpcProxy(req, res)
         return
       }
 
@@ -228,6 +248,24 @@ async function handleLogo(filename: string, res: ServerResponse) {
     res.writeHead(404, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify({ error: 'Logo not found' }))
   }
+}
+
+async function handleArcRpcProxy(req: IncomingMessage, res: ServerResponse) {
+  const arcRpc = process.env.ARC_RPC || 'https://rpc.testnet.arc.network'
+  const body = await new Promise<string>((resolve, reject) => {
+    let data = ''
+    req.on('data', chunk => { data += chunk })
+    req.on('end', () => resolve(data))
+    req.on('error', reject)
+  })
+  const upstream = await fetch(arcRpc, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+  })
+  const json = await upstream.text()
+  res.writeHead(upstream.status, { 'Content-Type': 'application/json' })
+  res.end(json)
 }
 
 export function startApiServer(server: Server, port: number): Promise<void> {

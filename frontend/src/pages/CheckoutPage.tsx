@@ -14,7 +14,7 @@ import {
   ProcessingStep,
   SuccessStep,
 } from '../components/checkout'
-import { USDCLogo, AvalancheLogo } from '../components/ui/chain-logos'
+import { USDCLogo, ArcLogo } from '../components/ui/chain-logos'
 import { Zap } from 'lucide-react'
 
 type Step = 'loading' | 'error' | 'plan_summary' | 'auth' | 'wallet_setup' | 'fund_wallet' | 'confirm' | 'processing' | 'success'
@@ -178,7 +178,7 @@ export function CheckoutPage() {
             </div>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">
-                <AvalancheLogo size={10} />
+                <ArcLogo size={10} />
                 Testnet
               </div>
               {isLoggedIn && (
@@ -249,7 +249,7 @@ export function CheckoutPage() {
           <p className="text-[10px] text-muted-foreground">
             Powered by Cadence Protocol &middot; Non-custodial
           </p>
-          <AvalancheLogo size={12} />
+          <ArcLogo size={12} />
         </div>
       </div>
     </div>

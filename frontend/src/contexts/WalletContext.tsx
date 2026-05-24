@@ -145,12 +145,13 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       .finally(() => setIsLoading(false))
   }, [credential, username, logout, circleClient, chainKey])
 
-  // Fetch balance and check setup when account changes
+  // Fetch balance and check setup when account changes, then poll every 30s
   React.useEffect(() => {
-    if (account?.address) {
-      fetchBalance()
-      checkWalletSetup()
-    }
+    if (!account?.address) return
+    fetchBalance()
+    checkWalletSetup()
+    const interval = setInterval(fetchBalance, 30_000)
+    return () => clearInterval(interval)
   }, [account?.address, fetchBalance, checkWalletSetup])
 
   // Clear account on logout

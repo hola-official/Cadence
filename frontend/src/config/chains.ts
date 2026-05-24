@@ -8,7 +8,7 @@ export const arcTestnet = defineChain({
   id: 5042002,
   name: 'Arc Testnet',
   nativeCurrency: { decimals: 6, name: 'USDC', symbol: 'USDC' },
-  rpcUrls: { default: { http: ['https://rpc.testnet.arc.network'] } },
+  rpcUrls: { default: { http: [`${import.meta.env.VITE_RELAYER_URL || 'http://localhost:3001'}/api/arc-rpc`] } },
   blockExplorers: { default: { name: 'Arcscan', url: 'https://testnet.arcscan.app' } },
   testnet: true,
 })
@@ -40,9 +40,14 @@ export const CHAIN_CONFIGS: Record<string, ChainConfig> = {
     shortName: 'Arc',
     transportPath: 'arcTestnet',
     usdc: '0x3600000000000000000000000000000000000000',
-    policyManager: undefined,
+    policyManager: DEPLOYMENTS[5042002]?.contracts.arbPolicyManager as `0x${string}` | undefined,
+    deployBlock: DEPLOYMENTS[5042002]?.deployBlock,
     explorer: 'https://testnet.arcscan.app',
-    enabled: false,
+    enabled: true,
+    minGasFees: {
+      maxPriorityFeePerGas: 1_000_000_000n, // 1 gwei — Arc bundler minimum
+      maxFeePerGas: 25_000_000_000n,         // 25 gwei — above Arc's 20 gwei floor
+    },
   },
   polygonAmoy: {
     key: 'polygonAmoy',
@@ -87,5 +92,5 @@ export const CHAIN_CONFIGS: Record<string, ChainConfig> = {
 }
 
 export const ENABLED_CHAINS = Object.values(CHAIN_CONFIGS).filter(c => c.enabled)
-export const DEFAULT_CHAIN = 'avalancheFuji'
+export const DEFAULT_CHAIN = 'arcTestnet'
 export type ChainKey = keyof typeof CHAIN_CONFIGS
